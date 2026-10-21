@@ -1,0 +1,7 @@
+SCD_Assignment_2.pdf
+plan.md
+bin/
+*.class
+.vscode/
+.idea/
+*.iml
