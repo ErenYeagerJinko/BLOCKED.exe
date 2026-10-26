@@ -43,8 +43,8 @@ public class ProfilePanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
                 BorderFactory.createEmptyBorder(25, 30, 25, 30)
         ));
-        card.setPreferredSize(new Dimension(420, 560));
-        card.setMaximumSize(new Dimension(420, 560));
+        card.setPreferredSize(new Dimension(460, 560));
+        card.setMaximumSize(new Dimension(460, 560));
 
         JLabel titleLabel = new JLabel("PLAYER PROFILE");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -109,9 +109,9 @@ public class ProfilePanel extends JPanel {
         JPanel buttonsRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
         buttonsRow.setOpaque(false);
 
-        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 115, 36);
-        leaderboardButton = UIButtonRenderer.createButton("Scores", UIButtonRenderer.GREEN_BUTTON, 115, 36);
-        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 95, 36);
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 125, 38);
+        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.GREEN_BUTTON, 150, 38);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 100, 38);
 
         buttonsRow.add(editProfileButton);
         buttonsRow.add(leaderboardButton);

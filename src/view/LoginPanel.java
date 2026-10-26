@@ -38,8 +38,8 @@ public class LoginPanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
                 BorderFactory.createEmptyBorder(25, 30, 25, 30)
         ));
-        card.setPreferredSize(new Dimension(380, 440));
-        card.setMaximumSize(new Dimension(380, 440));
+        card.setPreferredSize(new Dimension(400, 460));
+        card.setMaximumSize(new Dimension(400, 460));
 
         JLabel titleLabel = new JLabel("PLAYER LOGIN");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -80,14 +80,14 @@ public class LoginPanel extends JPanel {
                 BorderFactory.createEmptyBorder(4, 8, 4, 8)
         ));
 
-        loginButton = UIButtonRenderer.createButton("Login", UIButtonRenderer.BLUE_BUTTON, 260, 42);
+        loginButton = UIButtonRenderer.createButton("Login", UIButtonRenderer.BLUE_BUTTON, 290, 44);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginButton.addActionListener(e -> handleLogin());
 
-        switchToRegisterButton = UIButtonRenderer.createButton("Create New Account", UIButtonRenderer.NEUTRAL_BUTTON, 260, 40);
+        switchToRegisterButton = UIButtonRenderer.createButton("Create New Account", UIButtonRenderer.NEUTRAL_BUTTON, 290, 44);
         switchToRegisterButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 200, 40);
+        backButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 290, 44);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         statusLabel = new JLabel(" ");
@@ -131,6 +131,9 @@ public class LoginPanel extends JPanel {
                 authManager.login(username, password);
                 statusLabel.setForeground(new Color(100, 230, 120));
                 statusLabel.setText("Login successful!");
+                if (frame != null) {
+                    frame.showScreen("PROFILE");
+                }
             } catch (AuthException ex) {
                 statusLabel.setForeground(new Color(255, 100, 100));
                 statusLabel.setText(ex.getMessage() != null ? ex.getMessage() : "Invalid credentials.");
@@ -138,6 +141,9 @@ public class LoginPanel extends JPanel {
         } else {
             statusLabel.setForeground(new Color(100, 230, 120));
             statusLabel.setText("Authenticated: " + username);
+            if (frame != null) {
+                frame.showScreen("PROFILE");
+            }
         }
     }
 

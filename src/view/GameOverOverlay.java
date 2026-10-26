@@ -51,10 +51,10 @@ public class GameOverOverlay extends JPanel {
         bestScoreLabel.setForeground(new Color(255, 215, 0));
         bestScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        restartButton = UIButtonRenderer.createButton("Play Again", UIButtonRenderer.RESTART_BUTTON, 200, 42);
+        restartButton = UIButtonRenderer.createButton("Play Again", UIButtonRenderer.RESTART_BUTTON, 220, 44);
         restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        menuButton = UIButtonRenderer.createButton("Main Menu", UIButtonRenderer.MENU_BUTTON, 200, 42);
+        menuButton = UIButtonRenderer.createButton("Main Menu", UIButtonRenderer.MENU_BUTTON, 220, 44);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         modalCard.add(titleLabel);

@@ -59,13 +59,13 @@ public class LeaderboardPanel extends JPanel {
         JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
         filterRow.setOpaque(false);
 
-        filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 150, 36);
+        filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 180, 40);
         filterHighestButton.addActionListener(e -> {
             showingHighest = true;
             loadLeaderboardData();
         });
 
-        filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 150, 36);
+        filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 190, 40);
         filterCumulativeButton.addActionListener(e -> {
             showingHighest = false;
             loadLeaderboardData();
@@ -122,7 +122,7 @@ public class LeaderboardPanel extends JPanel {
 
         JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomRow.setOpaque(false);
-        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 180, 40);
+        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 210, 42);
         bottomRow.add(backButton);
 
         card.add(topSection, BorderLayout.NORTH);

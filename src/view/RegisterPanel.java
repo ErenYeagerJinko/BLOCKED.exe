@@ -43,8 +43,8 @@ public class RegisterPanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
                 BorderFactory.createEmptyBorder(20, 30, 20, 30)
         ));
-        card.setPreferredSize(new Dimension(420, 580));
-        card.setMaximumSize(new Dimension(420, 580));
+        card.setPreferredSize(new Dimension(460, 600));
+        card.setMaximumSize(new Dimension(460, 600));
 
         JLabel titleLabel = new JLabel("CREATE ACCOUNT");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -82,14 +82,14 @@ public class RegisterPanel extends JPanel {
         bioScroll.setMaximumSize(new Dimension(300, 60));
         bioScroll.setBorder(BorderFactory.createLineBorder(new Color(90, 90, 130), 1));
 
-        registerButton = UIButtonRenderer.createButton("Register", UIButtonRenderer.GREEN_BUTTON, 260, 42);
+        registerButton = UIButtonRenderer.createButton("Register", UIButtonRenderer.GREEN_BUTTON, 360, 44);
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         registerButton.addActionListener(e -> handleRegister());
 
-        switchToLoginButton = UIButtonRenderer.createButton("Already have an account? Sign In", UIButtonRenderer.NEUTRAL_BUTTON, 260, 40);
+        switchToLoginButton = UIButtonRenderer.createButton("Already have an account? Sign In", UIButtonRenderer.NEUTRAL_BUTTON, 360, 44);
         switchToLoginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 200, 40);
+        backButton = UIButtonRenderer.createButton("Back to Sign In", UIButtonRenderer.BACK_BUTTON, 240, 42);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         statusLabel = new JLabel(" ");
@@ -194,6 +194,9 @@ public class RegisterPanel extends JPanel {
                 authManager.register(username, password, avatar.isEmpty() ? null : avatar, bio);
                 statusLabel.setForeground(new Color(100, 230, 120));
                 statusLabel.setText("Account created successfully!");
+                if (frame != null) {
+                    frame.showScreen("PROFILE");
+                }
             } catch (AuthException ex) {
                 statusLabel.setForeground(new Color(255, 100, 100));
                 statusLabel.setText(ex.getMessage() != null ? ex.getMessage() : "Registration failed.");
@@ -201,6 +204,9 @@ public class RegisterPanel extends JPanel {
         } else {
             statusLabel.setForeground(new Color(100, 230, 120));
             statusLabel.setText("Account created for " + username);
+            if (frame != null) {
+                frame.showScreen("PROFILE");
+            }
         }
     }
 
