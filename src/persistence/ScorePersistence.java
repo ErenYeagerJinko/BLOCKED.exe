@@ -1,13 +1,7 @@
 package persistence;
 
-import exceptions.PersistenceException;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import exceptions.*;
+import java.io.*;
 
 public class ScorePersistence {
     private static final String HIGH_SCORE_FILE = "data/best_score.txt";
@@ -27,9 +21,7 @@ public class ScorePersistence {
             }
             return Integer.parseInt(line.trim());
         } catch (IOException | NumberFormatException e) {
-            PersistenceException ex = new PersistenceException();
-            ex.initCause(e);
-            throw ex;
+            throw new PersistenceException("Failed to read high score", e);
         }
     }
 
@@ -43,9 +35,7 @@ public class ScorePersistence {
             writer.write(String.valueOf(score));
             writer.newLine();
         } catch (IOException e) {
-            PersistenceException ex = new PersistenceException();
-            ex.initCause(e);
-            throw ex;
+            throw new PersistenceException("Failed to save high score", e);
         }
     }
 }

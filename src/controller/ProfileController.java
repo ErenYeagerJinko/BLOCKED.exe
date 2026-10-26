@@ -1,12 +1,9 @@
 package controller;
 
-import manager.LeaderboardManager;
-import manager.ProfileManager;
-import model.UserProfile;
-import view.GameFrame;
-import view.UserProfileDialog;
-
-import java.awt.Frame;
+import manager.*;
+import model.*;
+import view.*;
+import java.awt.*;
 
 public class ProfileController {
     private Frame frame;

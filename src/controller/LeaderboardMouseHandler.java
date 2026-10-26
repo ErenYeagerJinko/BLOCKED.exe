@@ -1,10 +1,8 @@
 package controller;
 
-import javax.swing.JTable;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class LeaderboardMouseHandler extends MouseAdapter {
     private JTable table;

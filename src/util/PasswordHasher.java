@@ -1,9 +1,7 @@
 package util;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.nio.charset.*;
+import java.security.*;
 
 public class PasswordHasher {
     private static final int SALT_LENGTH = 16;
