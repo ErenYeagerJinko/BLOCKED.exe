@@ -2,6 +2,8 @@ package view;
 
 import model.UserProfile;
 
+import util.BackgroundRenderer;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 
@@ -43,10 +46,18 @@ public class UserProfileDialog extends JDialog {
         setLocationRelativeTo(getOwner());
         setResizable(false);
 
-        JPanel mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                BackgroundRenderer.renderBackground(g, this);
+                g.setColor(new Color(20, 20, 30, 210));
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 15, 25));
-        mainPanel.setBackground(new Color(30, 30, 42));
+        mainPanel.setOpaque(false);
 
         avatarLabel = new JLabel();
         avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

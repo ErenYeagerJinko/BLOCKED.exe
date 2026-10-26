@@ -27,9 +27,7 @@ public class ScorePersistence {
             }
             return Integer.parseInt(line.trim());
         } catch (IOException | NumberFormatException e) {
-            PersistenceException ex = new PersistenceException();
-            ex.initCause(e);
-            throw ex;
+            throw new PersistenceException("Failed to read high score", e);
         }
     }
 
@@ -43,9 +41,7 @@ public class ScorePersistence {
             writer.write(String.valueOf(score));
             writer.newLine();
         } catch (IOException e) {
-            PersistenceException ex = new PersistenceException();
-            ex.initCause(e);
-            throw ex;
+            throw new PersistenceException("Failed to save high score", e);
         }
     }
 }
