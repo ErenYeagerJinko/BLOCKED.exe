@@ -1,14 +1,10 @@
 package view;
 
-import manager.ProfileManager;
-import model.UserProfile;
-import util.BackgroundRenderer;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import java.awt.Graphics;
+import manager.*;
+import model.*;
+import util.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class ProfilePanel extends JPanel {
     private JLabel avatarLabel;

@@ -1,10 +1,9 @@
 package view;
 
-import persistence.DataPersistenceManager;
-import util.BackgroundRenderer;
-
-import javax.swing.JPanel;
-import java.awt.Graphics;
+import persistence.*;
+import util.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class MainMenuPanel extends JPanel {
     private GameFrame frame;

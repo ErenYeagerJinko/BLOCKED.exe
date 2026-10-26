@@ -1,15 +1,9 @@
 package view;
 
-import manager.AuthManager;
-import util.BackgroundRenderer;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.Graphics;
+import manager.*;
+import util.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class RegisterPanel extends JPanel {
     private JTextField usernameField;

@@ -1,7 +1,7 @@
 package model;
 
-import java.awt.Color;
-import java.util.Objects;
+import java.awt.*;
+import java.util.*;
 
 public class Cell {
     private int row;

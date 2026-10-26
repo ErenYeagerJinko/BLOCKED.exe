@@ -1,13 +1,7 @@
 package persistence;
 
-import exceptions.PersistenceException;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import exceptions.*;
+import java.io.*;
 
 public class ScorePersistence {
     private static final String HIGH_SCORE_FILE = "data/best_score.txt";

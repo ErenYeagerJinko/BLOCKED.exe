@@ -1,12 +1,8 @@
 package view;
 
-import util.BackgroundRenderer;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Graphics;
+import util.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class GameOverOverlay extends JPanel {
     private GamePanel gamePanel;

@@ -1,11 +1,8 @@
 package util;
 
-import javax.imageio.ImageIO;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import javax.imageio.*;
+import java.awt.*;
+import java.io.*;
 
 public class BackgroundRenderer {
     private static final String DEFAULT_MENU_IMAGE = "resources/Images/mainMenu.png";

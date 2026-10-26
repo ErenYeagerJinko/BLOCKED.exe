@@ -1,9 +1,8 @@
 package view;
 
-import util.BackgroundRenderer;
-
-import javax.swing.JPanel;
-import java.awt.Graphics;
+import util.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class GamePanel extends JPanel {
 

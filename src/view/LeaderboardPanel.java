@@ -1,14 +1,11 @@
 package view;
 
-import controller.ProfileController;
-import manager.LeaderboardManager;
-import util.BackgroundRenderer;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import java.awt.Graphics;
+import controller.*;
+import manager.*;
+import util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+import java.awt.*;
 
 public class LeaderboardPanel extends JPanel {
     private JTable leaderboardTable;
