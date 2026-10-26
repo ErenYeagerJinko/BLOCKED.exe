@@ -102,7 +102,7 @@ public class UserProfileDialog extends JDialog {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
-        closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 120, 36);
+        closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 130, 38);
         closeButton.addActionListener(e -> dispose());
         buttonPanel.add(closeButton);
 

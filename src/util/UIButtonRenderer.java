@@ -115,7 +115,18 @@ public class UIButtonRenderer {
     }
 
     private static void configureButton(JButton button, int width, int height) {
-        Dimension dim = new Dimension(width, height);
+        button.setFont(getButtonFont(14f));
+        int effectiveWidth = width;
+        String text = button.getText();
+        if (text != null && !text.isEmpty()) {
+            FontMetrics fm = button.getFontMetrics(button.getFont());
+            int textWidth = fm.stringWidth(text);
+            if (textWidth + 16 > effectiveWidth) {
+                effectiveWidth = textWidth + 16;
+            }
+        }
+
+        Dimension dim = new Dimension(effectiveWidth, height);
         button.setPreferredSize(dim);
         button.setMinimumSize(dim);
         button.setMaximumSize(dim);
@@ -128,7 +139,6 @@ public class UIButtonRenderer {
 
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
-        button.setFont(getButtonFont(14f));
         button.setForeground(new Color(40, 40, 40));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
