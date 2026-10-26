@@ -8,32 +8,57 @@ import java.io.File;
 import java.io.IOException;
 
 public class BackgroundRenderer {
-    private static final String DEFAULT_IMAGE_PATH = "resources/Images/mainMenu.png";
-    private static Image backgroundImage;
+    private static final String DEFAULT_MENU_IMAGE = "resources/Images/mainMenu.png";
+    private static final String DEFAULT_GAME_IMAGE = "resources/Images/gameScreen.png";
+
+    private static Image menuBackgroundImage;
+    private static Image gameBackgroundImage;
 
     static {
-        loadImage();
+        loadMenuImage();
+        loadGameImage();
     }
 
-    private static void loadImage() {
-        File file = new File(DEFAULT_IMAGE_PATH);
+    private static void loadMenuImage() {
+        File file = new File(DEFAULT_MENU_IMAGE);
         if (file.exists()) {
             try {
-                backgroundImage = ImageIO.read(file);
+                menuBackgroundImage = ImageIO.read(file);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    private static void loadGameImage() {
+        File file = new File(DEFAULT_GAME_IMAGE);
+        if (file.exists()) {
+            try {
+                gameBackgroundImage = ImageIO.read(file);
             } catch (IOException ignored) {
             }
         }
     }
 
     public static void renderBackground(Graphics g, Component c) {
-        if (backgroundImage == null) {
-            loadImage();
+        if (menuBackgroundImage == null) {
+            loadMenuImage();
         }
-        if (backgroundImage != null) {
+        renderImage(g, c, menuBackgroundImage);
+    }
+
+    public static void renderGameBackground(Graphics g, Component c) {
+        if (gameBackgroundImage == null) {
+            loadGameImage();
+        }
+        renderImage(g, c, gameBackgroundImage);
+    }
+
+    private static void renderImage(Graphics g, Component c, Image image) {
+        if (image != null && c != null) {
             int panelW = c.getWidth();
             int panelH = c.getHeight();
-            int imgW = backgroundImage.getWidth(null);
-            int imgH = backgroundImage.getHeight(null);
+            int imgW = image.getWidth(null);
+            int imgH = image.getHeight(null);
 
             if (panelW > 0 && panelH > 0 && imgW > 0 && imgH > 0) {
                 double scale = Math.max((double) panelW / imgW, (double) panelH / imgH);
@@ -42,15 +67,22 @@ public class BackgroundRenderer {
                 int drawX = (panelW - drawW) / 2;
                 int drawY = (panelH - drawH) / 2;
 
-                g.drawImage(backgroundImage, drawX, drawY, drawW, drawH, c);
+                g.drawImage(image, drawX, drawY, drawW, drawH, c);
             }
         }
     }
 
-    public static Image getBackgroundImage() {
-        if (backgroundImage == null) {
-            loadImage();
+    public static Image getMenuBackgroundImage() {
+        if (menuBackgroundImage == null) {
+            loadMenuImage();
         }
-        return backgroundImage;
+        return menuBackgroundImage;
+    }
+
+    public static Image getGameBackgroundImage() {
+        if (gameBackgroundImage == null) {
+            loadGameImage();
+        }
+        return gameBackgroundImage;
     }
 }
