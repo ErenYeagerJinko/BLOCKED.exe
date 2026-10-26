@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
+import java.util.*;
 
 public class LeaderboardPanel extends JPanel {
     private JTable leaderboardTable;
@@ -46,7 +46,7 @@ public class LeaderboardPanel extends JPanel {
         card.setMaximumSize(new Dimension(520, 560));
 
         JLabel titleLabel = new JLabel("TOP PLAYERS LEADERBOARD", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
         titleLabel.setForeground(Color.WHITE);
 
         JPanel topSection = new JPanel();
@@ -59,25 +59,15 @@ public class LeaderboardPanel extends JPanel {
         JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
         filterRow.setOpaque(false);
 
-        filterHighestButton = new JButton("Highest Score");
-        filterHighestButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        filterHighestButton.setBackground(new Color(60, 110, 230));
-        filterHighestButton.setForeground(Color.WHITE);
+        filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 150, 36);
         filterHighestButton.addActionListener(e -> {
             showingHighest = true;
-            filterHighestButton.setBackground(new Color(60, 110, 230));
-            filterCumulativeButton.setBackground(new Color(45, 45, 65));
             loadLeaderboardData();
         });
 
-        filterCumulativeButton = new JButton("Cumulative Score");
-        filterCumulativeButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        filterCumulativeButton.setBackground(new Color(45, 45, 65));
-        filterCumulativeButton.setForeground(Color.WHITE);
+        filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 150, 36);
         filterCumulativeButton.addActionListener(e -> {
             showingHighest = false;
-            filterCumulativeButton.setBackground(new Color(60, 110, 230));
-            filterHighestButton.setBackground(new Color(45, 45, 65));
             loadLeaderboardData();
         });
 
@@ -94,7 +84,7 @@ public class LeaderboardPanel extends JPanel {
         };
 
         leaderboardTable = new JTable(tableModel);
-        leaderboardTable.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        leaderboardTable.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
         leaderboardTable.setRowHeight(28);
         leaderboardTable.setBackground(new Color(30, 30, 44));
         leaderboardTable.setForeground(new Color(230, 230, 245));
@@ -104,7 +94,7 @@ public class LeaderboardPanel extends JPanel {
         leaderboardTable.setIntercellSpacing(new Dimension(0, 1));
 
         JTableHeader header = leaderboardTable.getTableHeader();
-        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
         header.setBackground(new Color(45, 45, 68));
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(0, 30));
@@ -132,9 +122,7 @@ public class LeaderboardPanel extends JPanel {
 
         JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomRow.setOpaque(false);
-        backButton = new JButton("Back to Menu");
-        backButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        backButton.setPreferredSize(new Dimension(130, 32));
+        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 180, 40);
         bottomRow.add(backButton);
 
         card.add(topSection, BorderLayout.NORTH);
@@ -159,7 +147,7 @@ public class LeaderboardPanel extends JPanel {
                 : leaderboardManager.getTopCumulativeScores(50);
 
         if (lb != null) {
-            List<LeaderboardEntry> list = lb.getEntries();
+            java.util.List<LeaderboardEntry> list = lb.getEntries();
             for (LeaderboardEntry e : list) {
                 tableModel.addRow(new Object[]{
                         "#" + e.getRank(),

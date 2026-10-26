@@ -47,7 +47,7 @@ public class ProfilePanel extends JPanel {
         card.setMaximumSize(new Dimension(420, 560));
 
         JLabel titleLabel = new JLabel("PLAYER PROFILE");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -60,7 +60,7 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
 
         usernameLabel = new JLabel("Guest");
-        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        usernameLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 20f));
         usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -88,12 +88,12 @@ public class ProfilePanel extends JPanel {
         statsBox.add(statsLabel);
 
         JLabel bioTitle = new JLabel("About Me");
-        bioTitle.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        bioTitle.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
         bioTitle.setForeground(new Color(180, 180, 210));
         bioTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         aboutMeDisplay = new JTextArea("No bio provided.");
-        aboutMeDisplay.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        aboutMeDisplay.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         aboutMeDisplay.setForeground(new Color(220, 220, 235));
         aboutMeDisplay.setBackground(new Color(28, 28, 40));
         aboutMeDisplay.setEditable(false);
@@ -109,17 +109,9 @@ public class ProfilePanel extends JPanel {
         JPanel buttonsRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
         buttonsRow.setOpaque(false);
 
-        editProfileButton = new JButton("Edit Profile");
-        editProfileButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        editProfileButton.setPreferredSize(new Dimension(110, 32));
-
-        leaderboardButton = new JButton("Leaderboard");
-        leaderboardButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        leaderboardButton.setPreferredSize(new Dimension(110, 32));
-
-        backButton = new JButton("Back");
-        backButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        backButton.setPreferredSize(new Dimension(80, 32));
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 115, 36);
+        leaderboardButton = UIButtonRenderer.createButton("Scores", UIButtonRenderer.GREEN_BUTTON, 115, 36);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 95, 36);
 
         buttonsRow.add(editProfileButton);
         buttonsRow.add(leaderboardButton);
@@ -143,7 +135,7 @@ public class ProfilePanel extends JPanel {
     }
 
     private void styleStatLabel(JLabel label) {
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
         label.setForeground(new Color(230, 230, 245));
         label.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
     }
