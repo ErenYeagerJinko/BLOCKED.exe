@@ -33,43 +33,29 @@ public class GameOverOverlay extends JPanel {
                 BorderFactory.createLineBorder(new Color(90, 90, 140), 2, true),
                 BorderFactory.createEmptyBorder(25, 35, 25, 35)
         ));
-        modalCard.setPreferredSize(new Dimension(360, 320));
-        modalCard.setMaximumSize(new Dimension(360, 320));
+        modalCard.setPreferredSize(new Dimension(360, 340));
+        modalCard.setMaximumSize(new Dimension(360, 340));
 
         titleLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 26f));
         titleLabel.setForeground(new Color(255, 80, 80));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         scoreLabel = new JLabel("Final Score:  0", SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        scoreLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 18f));
         scoreLabel.setForeground(Color.WHITE);
         scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         bestScoreLabel = new JLabel("Best Score:  0", SwingConstants.CENTER);
-        bestScoreLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        bestScoreLabel.setFont(UIButtonRenderer.getFont(Font.PLAIN, 15f));
         bestScoreLabel.setForeground(new Color(255, 215, 0));
         bestScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        restartButton = new JButton("Play Again");
-        restartButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        restartButton.setBackground(new Color(60, 140, 240));
-        restartButton.setForeground(Color.WHITE);
-        restartButton.setFocusPainted(false);
+        restartButton = UIButtonRenderer.createButton("Play Again", UIButtonRenderer.RESTART_BUTTON, 200, 42);
         restartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        restartButton.setPreferredSize(new Dimension(200, 38));
-        restartButton.setMaximumSize(new Dimension(200, 38));
-        restartButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        menuButton = new JButton("Main Menu");
-        menuButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        menuButton.setBackground(new Color(50, 50, 70));
-        menuButton.setForeground(Color.WHITE);
-        menuButton.setFocusPainted(false);
+        menuButton = UIButtonRenderer.createButton("Main Menu", UIButtonRenderer.MENU_BUTTON, 200, 42);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        menuButton.setPreferredSize(new Dimension(200, 34));
-        menuButton.setMaximumSize(new Dimension(200, 34));
-        menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         modalCard.add(titleLabel);
         modalCard.add(Box.createRigidArea(new Dimension(0, 16)));

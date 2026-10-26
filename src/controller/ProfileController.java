@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.*;
 import manager.*;
 import model.*;
 import view.*;
@@ -20,12 +21,15 @@ public class ProfileController {
 
     public ProfileController(Frame frame, ProfileManager profileManager, LeaderboardManager leaderboardManager) {
         this.frame = frame;
-        this.profileManager = profileManager;
-        this.leaderboardManager = leaderboardManager;
+        this.profileManager = profileManager != null ? profileManager : new ProfileManager();
+        this.leaderboardManager = leaderboardManager != null ? leaderboardManager : new LeaderboardManager();
     }
 
     public void showUserProfileDialog(String username) {
         UserProfile profile = null;
+        if (profileManager != null && username != null) {
+            profile = profileManager.getProfile(username);
+        }
         if (profile == null && username != null) {
             profile = new UserProfile(username, "", "", null, "Leaderboard player profile");
         }
@@ -33,10 +37,28 @@ public class ProfileController {
         dialog.setVisible(true);
     }
 
-    public void handleUpdateAboutMe(String newAboutMe) {
+    public boolean handleUpdateAboutMe(String newAboutMe) {
+        if (profileManager == null) {
+            return false;
+        }
+        try {
+            profileManager.updateAboutMe(newAboutMe);
+            return true;
+        } catch (AuthException e) {
+            return false;
+        }
     }
 
-    public void handleUpdateProfilePicture(String picturePath) {
+    public boolean handleUpdateProfilePicture(String picturePath) {
+        if (profileManager == null) {
+            return false;
+        }
+        try {
+            profileManager.updateProfilePicture(picturePath);
+            return true;
+        } catch (AuthException e) {
+            return false;
+        }
     }
 
     public void navigateToLeaderboard() {

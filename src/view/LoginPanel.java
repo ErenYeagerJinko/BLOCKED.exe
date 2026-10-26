@@ -38,23 +38,23 @@ public class LoginPanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
                 BorderFactory.createEmptyBorder(25, 30, 25, 30)
         ));
-        card.setPreferredSize(new Dimension(380, 420));
-        card.setMaximumSize(new Dimension(380, 420));
+        card.setPreferredSize(new Dimension(380, 440));
+        card.setMaximumSize(new Dimension(380, 440));
 
         JLabel titleLabel = new JLabel("PLAYER LOGIN");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel userLabel = new JLabel("Username");
-        userLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        userLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
         userLabel.setForeground(new Color(200, 200, 220));
         userLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         usernameField = new JTextField(16);
         usernameField.setMaximumSize(new Dimension(300, 34));
         usernameField.setPreferredSize(new Dimension(300, 34));
-        usernameField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        usernameField.setFont(UIButtonRenderer.getFont(Font.PLAIN, 14f));
         usernameField.setBackground(new Color(36, 36, 52));
         usernameField.setForeground(Color.WHITE);
         usernameField.setCaretColor(Color.WHITE);
@@ -64,14 +64,14 @@ public class LoginPanel extends JPanel {
         ));
 
         JLabel passLabel = new JLabel("Password");
-        passLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        passLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
         passLabel.setForeground(new Color(200, 200, 220));
         passLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         passwordField = new JPasswordField(16);
         passwordField.setMaximumSize(new Dimension(300, 34));
         passwordField.setPreferredSize(new Dimension(300, 34));
-        passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        passwordField.setFont(UIButtonRenderer.getFont(Font.PLAIN, 14f));
         passwordField.setBackground(new Color(36, 36, 52));
         passwordField.setForeground(Color.WHITE);
         passwordField.setCaretColor(Color.WHITE);
@@ -80,39 +80,18 @@ public class LoginPanel extends JPanel {
                 BorderFactory.createEmptyBorder(4, 8, 4, 8)
         ));
 
-        loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        loginButton.setBackground(new Color(75, 110, 235));
-        loginButton.setForeground(Color.WHITE);
-        loginButton.setFocusPainted(false);
+        loginButton = UIButtonRenderer.createButton("Login", UIButtonRenderer.BLUE_BUTTON, 260, 42);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loginButton.setMaximumSize(new Dimension(300, 36));
-        loginButton.setPreferredSize(new Dimension(300, 36));
-        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginButton.addActionListener(e -> handleLogin());
 
-        switchToRegisterButton = new JButton("Create New Account");
-        switchToRegisterButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        switchToRegisterButton.setForeground(new Color(130, 180, 255));
-        switchToRegisterButton.setBackground(new Color(0, 0, 0, 0));
-        switchToRegisterButton.setBorderPainted(false);
-        switchToRegisterButton.setContentAreaFilled(false);
-        switchToRegisterButton.setFocusPainted(false);
+        switchToRegisterButton = UIButtonRenderer.createButton("Create New Account", UIButtonRenderer.NEUTRAL_BUTTON, 260, 40);
         switchToRegisterButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        switchToRegisterButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        backButton = new JButton("Back to Menu");
-        backButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        backButton.setForeground(new Color(180, 180, 200));
-        backButton.setBackground(new Color(0, 0, 0, 0));
-        backButton.setBorderPainted(false);
-        backButton.setContentAreaFilled(false);
-        backButton.setFocusPainted(false);
+        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 200, 40);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         statusLabel = new JLabel(" ");
-        statusLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        statusLabel.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         statusLabel.setForeground(new Color(255, 100, 100));
         statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

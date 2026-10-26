@@ -49,7 +49,7 @@ public class UserProfileDialog extends JDialog {
 
         usernameLabel = new JLabel(profile != null ? profile.getUsername() : "Unknown");
         usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        usernameLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        usernameLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
         usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0));
 
@@ -76,7 +76,7 @@ public class UserProfileDialog extends JDialog {
 
         JLabel bioHeading = new JLabel("About Me");
         bioHeading.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bioHeading.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        bioHeading.setFont(UIButtonRenderer.getFont(Font.BOLD, 14f));
         bioHeading.setForeground(new Color(180, 180, 210));
         bioHeading.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
 
@@ -84,7 +84,7 @@ public class UserProfileDialog extends JDialog {
         aboutMeArea.setEditable(false);
         aboutMeArea.setLineWrap(true);
         aboutMeArea.setWrapStyleWord(true);
-        aboutMeArea.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        aboutMeArea.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
         aboutMeArea.setForeground(new Color(220, 220, 235));
         aboutMeArea.setBackground(new Color(24, 24, 34));
         aboutMeArea.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -101,10 +101,8 @@ public class UserProfileDialog extends JDialog {
         mainPanel.add(scrollPane);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(new Color(30, 30, 42));
-        closeButton = new JButton("Close");
-        closeButton.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        closeButton.setPreferredSize(new Dimension(100, 34));
+        buttonPanel.setOpaque(false);
+        closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 120, 36);
         closeButton.addActionListener(e -> dispose());
         buttonPanel.add(closeButton);
 
@@ -114,7 +112,7 @@ public class UserProfileDialog extends JDialog {
 
     private JLabel createStatLabel(String title, String value) {
         JLabel label = new JLabel(title + "  " + value);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
         label.setForeground(new Color(230, 230, 245));
         label.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
         return label;
