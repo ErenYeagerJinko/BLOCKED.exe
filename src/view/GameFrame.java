@@ -36,7 +36,7 @@ public class GameFrame extends JFrame {
     private void initUI() {
         setTitle("BLOCKED.exe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 700);
+        setSize(800, 720);
         setMinimumSize(new Dimension(650, 650));
         setLocationRelativeTo(null);
 

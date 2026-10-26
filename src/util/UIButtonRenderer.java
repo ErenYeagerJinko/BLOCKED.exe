@@ -121,8 +121,8 @@ public class UIButtonRenderer {
         if (text != null && !text.isEmpty()) {
             FontMetrics fm = button.getFontMetrics(button.getFont());
             int textWidth = fm.stringWidth(text);
-            if (textWidth + 36 > effectiveWidth) {
-                effectiveWidth = textWidth + 36;
+            if (textWidth + 16 > effectiveWidth) {
+                effectiveWidth = textWidth + 16;
             }
         }
 
