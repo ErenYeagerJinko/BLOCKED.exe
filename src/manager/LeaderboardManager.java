@@ -3,6 +3,7 @@ package manager;
 import exceptions.*;
 import model.*;
 import persistence.*;
+import util.*;
 import java.util.*;
 
 public class LeaderboardManager {
@@ -16,6 +17,7 @@ public class LeaderboardManager {
     public LeaderboardManager(ProfilePersistence persistence) {
         this.persistence = persistence != null ? persistence : new ProfilePersistence();
         this.cachedLeaderboard = new Leaderboard();
+        Logger.getLogger().log("LeaderboardManager initialized");
         refreshLeaderboard();
     }
 
@@ -36,11 +38,14 @@ public class LeaderboardManager {
             }
             cachedLeaderboard.setEntries(entries);
             cachedLeaderboard.sortByHighestScore();
-        } catch (PersistenceException ignored) {
+            Logger.getLogger().log("Leaderboard refreshed successfully with " + entries.size() + " entries");
+        } catch (PersistenceException e) {
+            Logger.getLogger().error("Failed to refresh leaderboard: " + e.getMessage());
         }
     }
 
     public synchronized Leaderboard getTopScores(int limit) {
+        Logger.getLogger().log("Retrieving top " + limit + " highest scores from leaderboard");
         refreshLeaderboard();
         cachedLeaderboard.sortByHighestScore();
         if (limit > 0 && cachedLeaderboard.size() > limit) {
@@ -53,6 +58,7 @@ public class LeaderboardManager {
     }
 
     public synchronized Leaderboard getTopCumulativeScores(int limit) {
+        Logger.getLogger().log("Retrieving top " + limit + " cumulative scores from leaderboard");
         refreshLeaderboard();
         cachedLeaderboard.sortByCumulativeScore();
         if (limit > 0 && cachedLeaderboard.size() > limit) {
@@ -66,10 +72,13 @@ public class LeaderboardManager {
 
     public synchronized int getPlayerRank(String username) {
         if (username == null) {
+            Logger.getLogger().log("Cannot retrieve rank for null username");
             return -1;
         }
         LeaderboardEntry entry = cachedLeaderboard.getEntryByUsername(username);
-        return entry != null ? entry.getRank() : -1;
+        int rank = entry != null ? entry.getRank() : -1;
+        Logger.getLogger().log("Retrieved rank for " + username + ": " + rank);
+        return rank;
     }
 
     public Leaderboard getCachedLeaderboard() {

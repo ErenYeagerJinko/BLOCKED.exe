@@ -1,9 +1,9 @@
 package model;
 
 import exceptions.*;
+import util.*;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Board {
     public static final int GRID_SIZE = 8;
@@ -16,6 +16,7 @@ public class Board {
                 this.grid[r][c] = new Cell(r, c);
             }
         }
+        Logger.getLogger().log("Board initialized (" + GRID_SIZE + "x" + GRID_SIZE + ")");
     }
 
     public void reset() {
@@ -24,6 +25,7 @@ public class Board {
                 this.grid[r][c].clear();
             }
         }
+        Logger.getLogger().log("Board reset: all cells cleared");
     }
 
     public boolean isValidPlacement(BlockPiece piece, int gridRow, int gridCol) {
@@ -48,6 +50,7 @@ public class Board {
 
     public boolean placePiece(BlockPiece piece, int gridRow, int gridCol) throws InvalidPlacementException {
         if (!isValidPlacement(piece, gridRow, gridCol)) {
+            Logger.getLogger().error("Invalid piece placement at row=" + gridRow + ", col=" + gridCol);
             throw new InvalidPlacementException("Invalid piece placement at position", gridRow, gridCol);
         }
 
@@ -58,11 +61,12 @@ public class Board {
             grid[targetR][targetC].setColor(color);
             grid[targetR][targetC].setOccupied(true);
         }
+        Logger.getLogger().log("Piece successfully placed on board at (" + gridRow + ", " + gridCol + ")");
         return true;
     }
 
-    public List<Integer> detectCompletedRows() {
-        List<Integer> rows = new ArrayList<>();
+    public java.util.List<Integer> detectCompletedRows() {
+        java.util.List<Integer> rows = new ArrayList<>();
         for (int r = 0; r < GRID_SIZE; r++) {
             boolean full = true;
             for (int c = 0; c < GRID_SIZE; c++) {
@@ -78,8 +82,8 @@ public class Board {
         return rows;
     }
 
-    public List<Integer> detectCompletedColumns() {
-        List<Integer> cols = new ArrayList<>();
+    public java.util.List<Integer> detectCompletedColumns() {
+        java.util.List<Integer> cols = new ArrayList<>();
         for (int c = 0; c < GRID_SIZE; c++) {
             boolean full = true;
             for (int r = 0; r < GRID_SIZE; r++) {
@@ -95,7 +99,7 @@ public class Board {
         return cols;
     }
 
-    public int clearLines(List<Integer> rows, List<Integer> cols) {
+    public int clearLines(java.util.List<Integer> rows, java.util.List<Integer> cols) {
         Set<Point> cellsToClear = new HashSet<>();
 
         if (rows != null) {
@@ -120,6 +124,10 @@ public class Board {
 
         for (Point p : cellsToClear) {
             grid[p.x][p.y].clear();
+        }
+
+        if (!cellsToClear.isEmpty()) {
+            Logger.getLogger().log("Board cleared " + cellsToClear.size() + " cells across completed lines");
         }
 
         return cellsToClear.size();

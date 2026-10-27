@@ -30,6 +30,7 @@ public class RegisterPanel extends JPanel {
         this.frame = frame;
         this.authManager = authManager;
         initUI();
+        Logger.getLogger().log("RegisterPanel initialized");
     }
 
     private void initUI() {
@@ -199,6 +200,7 @@ public class RegisterPanel extends JPanel {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selected = chooser.getSelectedFile();
             avatarPathField.setText(selected.getAbsolutePath());
+            Logger.getLogger().log("Avatar file chosen in RegisterPanel: " + selected.getAbsolutePath());
         }
     }
 
@@ -210,30 +212,36 @@ public class RegisterPanel extends JPanel {
         String bio = aboutMeArea.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
+            Logger.getLogger().error("Registration validation failed: username or password empty");
             statusLabel.setForeground(new Color(255, 100, 100));
             statusLabel.setText("Username and password are required.");
             return;
         }
 
         if (!password.equals(confirm)) {
+            Logger.getLogger().error("Registration validation failed: passwords do not match for " + username);
             statusLabel.setForeground(new Color(255, 100, 100));
             statusLabel.setText("Passwords do not match.");
             return;
         }
 
+        Logger.getLogger().log("Submitting registration for user: " + username);
         if (authManager != null) {
             try {
                 authManager.register(username, password, avatar.isEmpty() ? null : avatar, bio);
+                Logger.getLogger().log("Registration succeeded in RegisterPanel for: " + username);
                 statusLabel.setForeground(new Color(100, 230, 120));
                 statusLabel.setText("Account created successfully!");
                 if (frame != null) {
                     frame.showScreen("PROFILE");
                 }
             } catch (AuthException ex) {
+                Logger.getLogger().error("Registration failed in RegisterPanel: " + ex.getMessage());
                 statusLabel.setForeground(new Color(255, 100, 100));
                 statusLabel.setText(ex.getMessage() != null ? ex.getMessage() : "Registration failed.");
             }
         } else {
+            Logger.getLogger().log("AuthManager unavailable, bypass register for: " + username);
             statusLabel.setForeground(new Color(100, 230, 120));
             statusLabel.setText("Account created for " + username);
             if (frame != null) {
@@ -249,6 +257,7 @@ public class RegisterPanel extends JPanel {
         if (avatarPathField != null) avatarPathField.setText("");
         if (aboutMeArea != null) aboutMeArea.setText("");
         if (statusLabel != null) statusLabel.setText(" ");
+        Logger.getLogger().log("RegisterPanel fields cleared");
     }
 
     public JButton getRegisterButton() {

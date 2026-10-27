@@ -21,8 +21,12 @@ public class BackgroundRenderer {
         if (file.exists()) {
             try {
                 menuBackgroundImage = ImageIO.read(file);
-            } catch (IOException ignored) {
+                Logger.getLogger().log("Menu background image loaded: " + DEFAULT_MENU_IMAGE);
+            } catch (IOException e) {
+                Logger.getLogger().error("Failed to load menu background image: " + e.getMessage());
             }
+        } else {
+            Logger.getLogger().error("Menu background image file not found: " + DEFAULT_MENU_IMAGE);
         }
     }
 
@@ -31,8 +35,12 @@ public class BackgroundRenderer {
         if (file.exists()) {
             try {
                 gameBackgroundImage = ImageIO.read(file);
-            } catch (IOException ignored) {
+                Logger.getLogger().log("Game background image loaded: " + DEFAULT_GAME_IMAGE);
+            } catch (IOException e) {
+                Logger.getLogger().error("Failed to load game background image: " + e.getMessage());
             }
+        } else {
+            Logger.getLogger().error("Game background image file not found: " + DEFAULT_GAME_IMAGE);
         }
     }
 

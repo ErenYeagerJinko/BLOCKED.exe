@@ -3,6 +3,7 @@ package manager;
 import exceptions.*;
 import model.*;
 import persistence.*;
+import util.*;
 import java.util.*;
 
 public class ProfileManager {
@@ -32,20 +33,25 @@ public class ProfileManager {
 
         try {
             persistence.saveProfile(current);
-        } catch (PersistenceException ignored) {
+            Logger.getLogger().log("Recorded game session for " + current.getUsername() + ": score=" + score + ", duration=" + sessionDurationSeconds + "s, lines=" + linesCleared);
+        } catch (PersistenceException e) {
+            Logger.getLogger().error("Failed to persist game session for " + current.getUsername() + ": " + e.getMessage());
         }
     }
 
     public synchronized void updateAboutMe(String newAboutMe) throws AuthException {
         UserProfile current = authManager != null ? authManager.getCurrentUser() : null;
         if (current == null) {
+            Logger.getLogger().error("Failed to update bio: No active user session");
             throw new AuthException("No active user session to update bio");
         }
 
         current.setAboutMe(newAboutMe != null ? newAboutMe : "");
         try {
             persistence.saveProfile(current);
+            Logger.getLogger().log("Updated bio for user: " + current.getUsername());
         } catch (PersistenceException e) {
+            Logger.getLogger().error("Failed to persist updated bio for " + current.getUsername() + ": " + e.getMessage());
             throw new AuthException("Failed to persist updated bio: " + e.getMessage(), current.getUsername(), e);
         }
     }
@@ -53,13 +59,16 @@ public class ProfileManager {
     public synchronized void updateProfilePicture(String newPicturePath) throws AuthException {
         UserProfile current = authManager != null ? authManager.getCurrentUser() : null;
         if (current == null) {
+            Logger.getLogger().error("Failed to update avatar: No active user session");
             throw new AuthException("No active user session to update avatar");
         }
 
         current.setProfilePicturePath(newPicturePath);
         try {
             persistence.saveProfile(current);
+            Logger.getLogger().log("Updated profile picture for user: " + current.getUsername() + " -> " + newPicturePath);
         } catch (PersistenceException e) {
+            Logger.getLogger().error("Failed to persist updated profile picture for " + current.getUsername() + ": " + e.getMessage());
             throw new AuthException("Failed to persist updated profile picture: " + e.getMessage(), current.getUsername(), e);
         }
     }

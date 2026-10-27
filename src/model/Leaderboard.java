@@ -1,5 +1,6 @@
 package model;
 
+import util.*;
 import java.util.*;
 
 public class Leaderboard {
@@ -15,6 +16,7 @@ public class Leaderboard {
     public Leaderboard(int maxEntries) {
         this.entries = new ArrayList<>();
         this.maxEntries = maxEntries > 0 ? maxEntries : DEFAULT_MAX_ENTRIES;
+        Logger.getLogger().log("Leaderboard initialized with max entries: " + this.maxEntries);
     }
 
     public List<LeaderboardEntry> getEntries() {
@@ -32,6 +34,7 @@ public class Leaderboard {
         }
         trimToMaxEntries();
         updateRanks();
+        Logger.getLogger().log("Leaderboard entries set: total " + this.entries.size() + " entries");
     }
 
     public void addEntry(LeaderboardEntry entry) {
@@ -41,10 +44,12 @@ public class Leaderboard {
         for (int i = 0; i < entries.size(); i++) {
             if (entries.get(i).getUsername().equalsIgnoreCase(entry.getUsername())) {
                 entries.set(i, entry);
+                Logger.getLogger().log("Leaderboard updated entry for: " + entry.getUsername());
                 return;
             }
         }
         entries.add(entry);
+        Logger.getLogger().log("Leaderboard added new entry for: " + entry.getUsername());
     }
 
     public void sortByHighestScore() {
@@ -54,6 +59,7 @@ public class Leaderboard {
                 .thenComparing(Comparator.comparingLong(LeaderboardEntry::getTotalScore).reversed()));
         trimToMaxEntries();
         updateRanks();
+        Logger.getLogger().log("Leaderboard sorted by highest score (" + entries.size() + " entries)");
     }
 
     public void sortByCumulativeScore() {
@@ -63,6 +69,7 @@ public class Leaderboard {
                 .thenComparing(Comparator.comparingInt(LeaderboardEntry::getHighestScore).reversed()));
         trimToMaxEntries();
         updateRanks();
+        Logger.getLogger().log("Leaderboard sorted by cumulative score (" + entries.size() + " entries)");
     }
 
     private void updateRanks() {
@@ -99,6 +106,7 @@ public class Leaderboard {
 
     public void clear() {
         entries.clear();
+        Logger.getLogger().log("Leaderboard cleared");
     }
 
     public int getMaxEntries() {

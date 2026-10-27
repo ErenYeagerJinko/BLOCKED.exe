@@ -30,6 +30,7 @@ public class LeaderboardPanel extends JPanel {
         this.leaderboardManager = leaderboardManager != null ? leaderboardManager : new LeaderboardManager();
         this.profileController = profileController;
         initUI();
+        Logger.getLogger().log("LeaderboardPanel initialized");
     }
 
     private void initUI() {
@@ -61,12 +62,14 @@ public class LeaderboardPanel extends JPanel {
 
         filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 180, 40);
         filterHighestButton.addActionListener(e -> {
+            Logger.getLogger().log("Leaderboard filter changed to Highest Score");
             showingHighest = true;
             loadLeaderboardData();
         });
 
         filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 190, 40);
         filterCumulativeButton.addActionListener(e -> {
+            Logger.getLogger().log("Leaderboard filter changed to Cumulative Score");
             showingHighest = false;
             loadLeaderboardData();
         });
@@ -139,6 +142,7 @@ public class LeaderboardPanel extends JPanel {
         }
         tableModel.setRowCount(0);
         if (leaderboardManager == null) {
+            Logger.getLogger().error("LeaderboardManager null when loading leaderboard data");
             return;
         }
 
@@ -157,6 +161,7 @@ public class LeaderboardPanel extends JPanel {
                         e.getFormattedPlayTime()
                 });
             }
+            Logger.getLogger().log("Populated LeaderboardPanel table with " + list.size() + " entries (filter=" + (showingHighest ? "Highest" : "Cumulative") + ")");
         }
     }
 

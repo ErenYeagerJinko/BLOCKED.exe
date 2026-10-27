@@ -1,23 +1,24 @@
 package animation;
 
+import util.*;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class RowClearAnimation extends Animation {
-    private List<Integer> rows;
-    private List<Integer> cols;
+    private java.util.List<Integer> rows;
+    private java.util.List<Integer> cols;
     private int boardOriginX;
     private int boardOriginY;
     private int cellSize;
 
-    public RowClearAnimation(List<Integer> rows, List<Integer> cols, int originX, int originY, int cellSize, long durationMs) {
+    public RowClearAnimation(java.util.List<Integer> rows, java.util.List<Integer> cols, int originX, int originY, int cellSize, long durationMs) {
         super(durationMs);
         this.rows = rows != null ? new ArrayList<>(rows) : new ArrayList<>();
         this.cols = cols != null ? new ArrayList<>(cols) : new ArrayList<>();
         this.boardOriginX = originX;
         this.boardOriginY = originY;
         this.cellSize = cellSize;
+        Logger.getLogger().log("RowClearAnimation started for " + this.rows.size() + " rows and " + this.cols.size() + " columns (" + durationMs + "ms)");
     }
 
     @Override
@@ -61,11 +62,11 @@ public class RowClearAnimation extends Animation {
         g2d.setComposite(originalComposite);
     }
 
-    public List<Integer> getRows() {
+    public java.util.List<Integer> getRows() {
         return new ArrayList<>(rows);
     }
 
-    public List<Integer> getCols() {
+    public java.util.List<Integer> getCols() {
         return new ArrayList<>(cols);
     }
 

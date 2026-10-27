@@ -25,6 +25,7 @@ public class LoginPanel extends JPanel {
         this.frame = frame;
         this.authManager = authManager;
         initUI();
+        Logger.getLogger().log("LoginPanel initialized");
     }
 
     private void initUI() {
@@ -121,24 +122,29 @@ public class LoginPanel extends JPanel {
         String password = new String(passwordField.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
+            Logger.getLogger().error("Login attempt with empty username or password");
             statusLabel.setForeground(new Color(255, 100, 100));
             statusLabel.setText("Please enter both username and password.");
             return;
         }
 
+        Logger.getLogger().log("Login submitted for user: " + username);
         if (authManager != null) {
             try {
                 authManager.login(username, password);
+                Logger.getLogger().log("Login succeeded in LoginPanel for: " + username);
                 statusLabel.setForeground(new Color(100, 230, 120));
                 statusLabel.setText("Login successful!");
                 if (frame != null) {
                     frame.showScreen("PROFILE");
                 }
             } catch (AuthException ex) {
+                Logger.getLogger().error("Login failed in LoginPanel: " + ex.getMessage());
                 statusLabel.setForeground(new Color(255, 100, 100));
                 statusLabel.setText(ex.getMessage() != null ? ex.getMessage() : "Invalid credentials.");
             }
         } else {
+            Logger.getLogger().log("AuthManager unavailable, bypass login for: " + username);
             statusLabel.setForeground(new Color(100, 230, 120));
             statusLabel.setText("Authenticated: " + username);
             if (frame != null) {
@@ -151,6 +157,7 @@ public class LoginPanel extends JPanel {
         if (usernameField != null) usernameField.setText("");
         if (passwordField != null) passwordField.setText("");
         if (statusLabel != null) statusLabel.setText(" ");
+        Logger.getLogger().log("LoginPanel fields cleared");
     }
 
     public JButton getLoginButton() {

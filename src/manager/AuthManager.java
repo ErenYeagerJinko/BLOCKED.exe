@@ -20,14 +20,18 @@ public class AuthManager {
 
     public synchronized UserProfile register(String username, String rawPassword, String profilePicturePath, String aboutMe) throws AuthException {
         if (username == null || username.trim().isEmpty()) {
+            Logger.getLogger().error("Registration failed: Username cannot be empty");
             throw new AuthException("Username cannot be empty");
         }
         if (rawPassword == null || rawPassword.isEmpty()) {
+            Logger.getLogger().error("Registration failed: Password cannot be empty");
             throw new AuthException("Password cannot be empty");
         }
 
         String trimmedUser = username.trim();
+        Logger.getLogger().log("Attempting registration for user: " + trimmedUser);
         if (userExists(trimmedUser)) {
+            Logger.getLogger().error("Registration failed: Username already exists: " + trimmedUser);
             throw new AuthException("Username already exists", trimmedUser);
         }
 
@@ -38,31 +42,38 @@ public class AuthManager {
         try {
             persistence.saveProfile(profile);
             this.currentUser = profile;
+            Logger.getLogger().log("User registered successfully: " + trimmedUser);
             return profile;
         } catch (PersistenceException e) {
+            Logger.getLogger().error("Registration failed to persist profile for " + trimmedUser + ": " + e.getMessage());
             throw new AuthException("Failed to save profile: " + e.getMessage(), trimmedUser, e);
         }
     }
 
     public synchronized UserProfile login(String username, String rawPassword) throws AuthException {
         if (username == null || rawPassword == null) {
+            Logger.getLogger().error("Login failed: Invalid credentials provided");
             throw new AuthException("Invalid credentials");
         }
 
         String trimmedUser = username.trim();
+        Logger.getLogger().log("Attempting login for user: " + trimmedUser);
         UserProfile profile;
         try {
             profile = persistence.loadProfile(trimmedUser);
         } catch (PersistenceException e) {
+            Logger.getLogger().error("Login error accessing storage for " + trimmedUser + ": " + e.getMessage());
             throw new AuthException("Error accessing profile storage", trimmedUser, e);
         }
 
         if (profile == null) {
+            Logger.getLogger().error("Login failed: User not found: " + trimmedUser);
             throw new AuthException("User not found", trimmedUser);
         }
 
         boolean valid = PasswordHasher.verifyPassword(rawPassword, profile.getSalt(), profile.getPasswordHash());
         if (!valid) {
+            Logger.getLogger().error("Login failed: Incorrect password for: " + trimmedUser);
             throw new AuthException("Incorrect password", trimmedUser);
         }
 
@@ -73,10 +84,14 @@ public class AuthManager {
         }
 
         this.currentUser = profile;
+        Logger.getLogger().log("User logged in successfully: " + trimmedUser);
         return profile;
     }
 
     public synchronized void logout() {
+        if (currentUser != null) {
+            Logger.getLogger().log("User logged out: " + currentUser.getUsername());
+        }
         this.currentUser = null;
     }
 

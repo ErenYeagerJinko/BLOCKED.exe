@@ -1,5 +1,6 @@
 package model;
 
+import util.*;
 import java.time.*;
 import java.util.*;
 
@@ -34,6 +35,7 @@ public class UserProfile {
         this.linesCleared = 0;
         this.createdAt = LocalDateTime.now();
         this.lastLoginAt = LocalDateTime.now();
+        Logger.getLogger().log("UserProfile created for user: " + username);
     }
 
     public String getUsername() {
@@ -71,6 +73,7 @@ public class UserProfile {
     public void updateHighestScore(int score) {
         if (score > this.highestScore) {
             this.highestScore = score;
+            Logger.getLogger().log("Updated new highest score for " + username + ": " + score);
         }
     }
 
@@ -85,6 +88,7 @@ public class UserProfile {
     public void addScore(int score) {
         if (score > 0) {
             this.totalCumulativeScore += score;
+            Logger.getLogger().log("Added score " + score + " to " + username + ", cumulative score: " + this.totalCumulativeScore);
             updateHighestScore(score);
         }
     }
@@ -100,6 +104,7 @@ public class UserProfile {
     public void addPlayTime(long seconds) {
         if (seconds > 0) {
             this.totalPlayTimeSeconds += seconds;
+            Logger.getLogger().log("Added play time " + seconds + "s to " + username + " (total: " + this.totalPlayTimeSeconds + "s)");
         }
     }
 
@@ -143,6 +148,7 @@ public class UserProfile {
 
     public void incrementGamesPlayed() {
         this.gamesPlayed++;
+        Logger.getLogger().log("Incremented games played for " + username + " to " + this.gamesPlayed);
     }
 
     public int getLinesCleared() {
@@ -156,6 +162,7 @@ public class UserProfile {
     public void addLinesCleared(int count) {
         if (count > 0) {
             this.linesCleared += count;
+            Logger.getLogger().log("Added " + count + " lines cleared to " + username + " (total: " + this.linesCleared + ")");
         }
     }
 
@@ -177,6 +184,7 @@ public class UserProfile {
 
     public void updateLastLogin() {
         this.lastLoginAt = LocalDateTime.now();
+        Logger.getLogger().log("Updated last login time for " + username);
     }
 
     @Override
