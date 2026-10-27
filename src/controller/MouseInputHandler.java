@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import util.*;
 import view.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,6 +19,7 @@ public class MouseInputHandler extends MouseAdapter {
     public MouseInputHandler(GamePanel panel, Game game) {
         this.panel = panel;
         this.game = game;
+        Logger.getLogger().log("MouseInputHandler initialized");
     }
 
     @Override
@@ -30,6 +32,7 @@ public class MouseInputHandler extends MouseAdapter {
         if (slot >= 0) {
             draggedSlot = slot;
             currentDragPoint = p;
+            Logger.getLogger().log("Piece grabbed from tray slot " + slot + " at (" + p.x + ", " + p.y + ")");
             if (panel != null) {
                 panel.repaint();
             }
@@ -52,6 +55,8 @@ public class MouseInputHandler extends MouseAdapter {
             return;
         }
         if (draggedSlot >= 0) {
+            Point p = e.getPoint();
+            Logger.getLogger().log("Piece released from slot " + draggedSlot + " at (" + p.x + ", " + p.y + ")");
             resetDrag();
             if (panel != null) {
                 panel.repaint();

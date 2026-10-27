@@ -30,6 +30,7 @@ public class ProfilePanel extends JPanel {
         this.frame = frame;
         this.profileManager = profileManager;
         initUI();
+        Logger.getLogger().log("ProfilePanel initialized");
     }
 
     private void initUI() {
@@ -142,6 +143,7 @@ public class ProfilePanel extends JPanel {
 
     public void refreshProfile(UserProfile profile) {
         if (profile == null) {
+            Logger.getLogger().log("ProfilePanel refresh skipped: null profile");
             return;
         }
         usernameLabel.setText(profile.getUsername());
@@ -151,6 +153,7 @@ public class ProfilePanel extends JPanel {
         statsLabel.setText("Games / Lines Cleared:  " + profile.getGamesPlayed() + " / " + profile.getLinesCleared());
         aboutMeDisplay.setText(profile.getAboutMe() != null && !profile.getAboutMe().isEmpty() ? profile.getAboutMe() : "No bio provided.");
         loadAvatar(profile.getProfilePicturePath());
+        Logger.getLogger().log("ProfilePanel refreshed for user: " + profile.getUsername());
     }
 
     private void loadAvatar(String path) {
@@ -161,11 +164,13 @@ public class ProfilePanel extends JPanel {
                 Image img = icon.getImage().getScaledInstance(92, 92, Image.SCALE_SMOOTH);
                 avatarLabel.setIcon(new ImageIcon(img));
                 avatarLabel.setText("");
+                Logger.getLogger().log("ProfilePanel loaded avatar: " + path);
                 return;
             }
         }
         avatarLabel.setIcon(null);
         avatarLabel.setText("👤");
+        Logger.getLogger().log("ProfilePanel avatar defaulted to placeholder emoji");
     }
 
     public JButton getEditProfileButton() {

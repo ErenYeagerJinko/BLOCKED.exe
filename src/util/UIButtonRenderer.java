@@ -29,9 +29,13 @@ public class UIButtonRenderer {
         if (fontFile.exists()) {
             try {
                 customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-            } catch (Exception ignored) {
+                Logger.getLogger().log("Custom font loaded successfully: Kenney Future Narrow");
+            } catch (Exception e) {
+                Logger.getLogger().error("Failed to load custom font: " + e.getMessage());
                 customFont = null;
             }
+        } else {
+            Logger.getLogger().error("Custom font file not found: resources/UI/Font/Kenney Future Narrow.ttf");
         }
     }
 
@@ -47,9 +51,13 @@ public class UIButtonRenderer {
             try {
                 BufferedImage img = ImageIO.read(file);
                 imageCache.put(relativePath, img);
+                Logger.getLogger().log("UI button texture loaded and cached: " + relativePath);
                 return img;
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                Logger.getLogger().error("Failed to read UI button texture " + relativePath + ": " + e.getMessage());
             }
+        } else {
+            Logger.getLogger().error("UI button texture file not found: " + relativePath);
         }
         return null;
     }

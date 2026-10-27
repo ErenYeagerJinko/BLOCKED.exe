@@ -19,6 +19,7 @@ public class UserProfileDialog extends JDialog {
     public UserProfileDialog(Frame owner, UserProfile profile) {
         super(owner, "Player Profile", true);
         initUI(profile);
+        Logger.getLogger().log("UserProfileDialog opened for: " + (profile != null ? profile.getUsername() : "null"));
     }
 
     private void initUI(UserProfile profile) {
@@ -103,7 +104,10 @@ public class UserProfileDialog extends JDialog {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
         closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 130, 38);
-        closeButton.addActionListener(e -> dispose());
+        closeButton.addActionListener(e -> {
+            Logger.getLogger().log("UserProfileDialog closed");
+            dispose();
+        });
         buttonPanel.add(closeButton);
 
         add(mainPanel, BorderLayout.CENTER);
@@ -125,6 +129,7 @@ public class UserProfileDialog extends JDialog {
                 ImageIcon icon = new ImageIcon(path);
                 Image img = icon.getImage().getScaledInstance(96, 96, Image.SCALE_SMOOTH);
                 avatarLabel.setIcon(new ImageIcon(img));
+                Logger.getLogger().log("UserProfileDialog avatar image loaded: " + path);
                 return;
             }
         }
@@ -132,5 +137,6 @@ public class UserProfileDialog extends JDialog {
         avatarLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 52));
         avatarLabel.setHorizontalAlignment(SwingConstants.CENTER);
         avatarLabel.setForeground(new Color(150, 150, 180));
+        Logger.getLogger().log("UserProfileDialog avatar defaulted to placeholder emoji");
     }
 }

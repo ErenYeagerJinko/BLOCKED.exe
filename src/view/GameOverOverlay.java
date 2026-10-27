@@ -20,6 +20,7 @@ public class GameOverOverlay extends JPanel {
     public GameOverOverlay(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         initUI();
+        Logger.getLogger().log("GameOverOverlay initialized");
     }
 
     private void initUI() {
@@ -80,6 +81,7 @@ public class GameOverOverlay extends JPanel {
         }
         scoreLabel.setText("Final Score:  " + finalScore);
         bestScoreLabel.setText("Best Score:  " + bestScore);
+        Logger.getLogger().log("GameOverOverlay display updated (finalScore=" + finalScore + ", bestScore=" + bestScore + ", victory=" + victory + ")");
     }
 
     public JButton getRestartButton() {

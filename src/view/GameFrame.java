@@ -24,6 +24,7 @@ public class GameFrame extends JFrame {
     public GameFrame() {
         initManagers();
         initUI();
+        Logger.getLogger().log("GameFrame initialized and ready");
     }
 
     private void initManagers() {
@@ -92,6 +93,7 @@ public class GameFrame extends JFrame {
     }
 
     public void showScreen(String screenName) {
+        Logger.getLogger().log("GameFrame switching view to screen: " + screenName);
         if ("PROFILE".equalsIgnoreCase(screenName)) {
             UserProfile user = authManager != null ? authManager.getCurrentUser() : null;
             if (user != null) {
@@ -104,14 +106,17 @@ public class GameFrame extends JFrame {
     }
 
     public void startNewGame(GameMode mode) {
+        Logger.getLogger().log("New game starting with mode: " + mode);
         showScreen("LEADERBOARD");
     }
 
     public void resumeSavedGame() {
+        Logger.getLogger().log("Resuming saved game session");
         showScreen("LEADERBOARD");
     }
 
     public void showGameOver(int finalScore, int bestScore, boolean victory) {
+        Logger.getLogger().log("Game over presented: score=" + finalScore + ", best=" + bestScore + ", victory=" + victory);
         gameOverOverlay.updateDisplay(finalScore, bestScore, victory);
         showScreen("GAMEOVER");
     }

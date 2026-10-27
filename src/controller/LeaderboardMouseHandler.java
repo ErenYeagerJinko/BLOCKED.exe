@@ -1,5 +1,6 @@
 package controller;
 
+import util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -25,6 +26,7 @@ public class LeaderboardMouseHandler extends MouseAdapter {
         if (row >= 0 && col == 1) {
             Object val = table.getValueAt(row, 1);
             if (val != null) {
+                Logger.getLogger().log("Leaderboard username clicked: " + val.toString());
                 profileController.showUserProfileDialog(val.toString());
             }
         }

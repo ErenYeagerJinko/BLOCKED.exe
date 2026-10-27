@@ -1,5 +1,6 @@
 package animation;
 
+import util.*;
 import java.awt.*;
 
 public abstract class Animation implements Drawable {
@@ -24,6 +25,7 @@ public abstract class Animation implements Drawable {
         elapsedMs += deltaMs;
         if (durationMs > 0 && elapsedMs >= durationMs) {
             finished = true;
+            Logger.getLogger().log("Animation finished (duration: " + durationMs + "ms)");
         }
     }
 

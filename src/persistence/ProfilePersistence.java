@@ -2,6 +2,7 @@ package persistence;
 
 import exceptions.*;
 import model.*;
+import util.*;
 import java.io.*;
 import java.time.*;
 import java.time.format.*;
@@ -19,6 +20,7 @@ public class ProfilePersistence {
         Map<String, UserProfile> profiles = new LinkedHashMap<>();
         File file = new File(PROFILES_FILE);
         if (!file.exists()) {
+            Logger.getLogger().log("Profiles file not found, returning empty profile map");
             return profiles;
         }
 
@@ -34,7 +36,9 @@ public class ProfilePersistence {
                     profiles.put(profile.getUsername().toLowerCase(), profile);
                 }
             }
+            Logger.getLogger().log("Loaded " + profiles.size() + " user profiles from storage");
         } catch (IOException e) {
+            Logger.getLogger().error("Failed to load user profiles: " + e.getMessage());
             throw new PersistenceException("Failed to load user profiles", e);
         }
 
@@ -57,7 +61,9 @@ public class ProfilePersistence {
                     }
                 }
             }
+            Logger.getLogger().log("Saved " + (profiles != null ? profiles.size() : 0) + " user profiles to storage");
         } catch (IOException e) {
+            Logger.getLogger().error("Failed to save user profiles: " + e.getMessage());
             throw new PersistenceException("Failed to save user profiles", e);
         }
     }
@@ -69,6 +75,7 @@ public class ProfilePersistence {
         Map<String, UserProfile> profiles = loadAllProfiles();
         profiles.put(profile.getUsername().toLowerCase(), profile);
         saveAllProfiles(profiles.values());
+        Logger.getLogger().log("Saved profile for user: " + profile.getUsername());
     }
 
     public synchronized UserProfile loadProfile(String username) throws PersistenceException {
@@ -76,7 +83,9 @@ public class ProfilePersistence {
             return null;
         }
         Map<String, UserProfile> profiles = loadAllProfiles();
-        return profiles.get(username.toLowerCase());
+        UserProfile profile = profiles.get(username.toLowerCase());
+        Logger.getLogger().log("Loaded profile for user: " + username + " (found=" + (profile != null) + ")");
+        return profile;
     }
 
     private String serializeProfile(UserProfile p) {
