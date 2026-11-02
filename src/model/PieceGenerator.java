@@ -1,12 +1,11 @@
 package model;
 
-import enums.ShapeType;
-import exceptions.InvalidPieceException;
+import enums.*;
+import exceptions.*;
 
-import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Factory class responsible for constructing polyomino puzzle pieces

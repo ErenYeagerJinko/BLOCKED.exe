@@ -1,7 +1,8 @@
 package model;
 
 import enums.*;
-import java.awt.Color;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 
 public class BlockPiece {

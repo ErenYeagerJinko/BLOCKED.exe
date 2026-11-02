@@ -1,15 +1,10 @@
 package animation;
 
-import model.BlockPiece;
-import model.Cell;
-import util.Logger;
+import model.*;
+import util.*;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 
 /**
