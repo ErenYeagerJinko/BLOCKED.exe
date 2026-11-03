@@ -47,6 +47,10 @@ public class ScoreManager {
         currentScore = 0;
     }
 
+    public void setCurrentScore(int score) {
+        currentScore = Math.max(0, score);
+    }
+
     public void updateBestScore() {
         if (currentScore <= bestScore) {
             return;

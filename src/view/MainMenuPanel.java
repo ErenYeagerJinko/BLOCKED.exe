@@ -21,6 +21,8 @@ public class MainMenuPanel extends JPanel {
     private GameFrame frame;
     private DataPersistenceManager persistenceManager;
 
+    private JButton resumeButton;
+    private Component resumeGap;
     private JButton classicButton;
     private JButton timeAttackButton;
     private JButton instructionsButton;
@@ -55,6 +57,7 @@ public class MainMenuPanel extends JPanel {
         this.persistenceManager = persistenceManager;
         initUI();
         wireActions();
+        refreshResumeButton();
         Logger.getLogger().log("MainMenuPanel initialized");
     }
 
@@ -72,8 +75,8 @@ public class MainMenuPanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(90, 100, 140), 2, true),
                 BorderFactory.createEmptyBorder(24, 32, 24, 32)
         ));
-        menuCard.setPreferredSize(new Dimension(360, 520));
-        menuCard.setMaximumSize(new Dimension(360, 520));
+        menuCard.setPreferredSize(new Dimension(360, 580));
+        menuCard.setMaximumSize(new Dimension(360, 580));
 
         JLabel titleLabel = new JLabel("BLOCKED.exe");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 26f));
@@ -85,6 +88,7 @@ public class MainMenuPanel extends JPanel {
         subtitleLabel.setForeground(new Color(190, 200, 220));
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        resumeButton = UIButtonRenderer.createButton("RESUME GAME", UIButtonRenderer.GREEN_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
         classicButton = UIButtonRenderer.createButton("CLASSIC MODE", UIButtonRenderer.GREEN_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
         timeAttackButton = UIButtonRenderer.createButton("TIME ATTACK (180s)", UIButtonRenderer.YELLOW_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
         instructionsButton = UIButtonRenderer.createButton("INSTRUCTIONS", UIButtonRenderer.BLUE_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -92,6 +96,7 @@ public class MainMenuPanel extends JPanel {
         profileButton = UIButtonRenderer.createButton("MY PROFILE", UIButtonRenderer.MENU_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
         exitButton = UIButtonRenderer.createButton("EXIT GAME", UIButtonRenderer.RED_BUTTON, BUTTON_WIDTH, BUTTON_HEIGHT);
 
+        centerButton(resumeButton);
         centerButton(classicButton);
         centerButton(timeAttackButton);
         centerButton(instructionsButton);
@@ -105,6 +110,9 @@ public class MainMenuPanel extends JPanel {
         menuCard.add(subtitleLabel);
         menuCard.add(Box.createVerticalStrut(22));
 
+        resumeGap = Box.createVerticalStrut(10);
+        menuCard.add(resumeButton);
+        menuCard.add(resumeGap);
         menuCard.add(classicButton);
         menuCard.add(Box.createVerticalStrut(10));
         menuCard.add(timeAttackButton);
@@ -130,9 +138,30 @@ public class MainMenuPanel extends JPanel {
     }
 
     /**
+     * Shows the Resume button only while an unfinished game is saved.
+     */
+    public void refreshResumeButton() {
+        boolean hasSave = persistenceManager != null && persistenceManager.hasSavedGame();
+        resumeButton.setVisible(hasSave);
+        resumeGap.setVisible(hasSave);
+        revalidate();
+        repaint();
+    }
+
+    /**
      * Attaches interactive event listeners to all menu buttons.
      */
     private void wireActions() {
+        resumeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SoundManager.getInstance().playSelect();
+                if (frame != null) {
+                    frame.resumeSavedGame();
+                }
+            }
+        });
+
         classicButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -197,6 +226,10 @@ public class MainMenuPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         BackgroundRenderer.renderBackground(g, this);
+    }
+
+    public JButton getResumeButton() {
+        return resumeButton;
     }
 
     public JButton getClassicButton() {

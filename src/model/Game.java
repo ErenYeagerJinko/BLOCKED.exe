@@ -20,6 +20,7 @@ public class Game {
     private java.util.List<Integer> lastClearedRows = new ArrayList<>();
     private java.util.List<Integer> lastClearedCols = new ArrayList<>();
     private int lastLinePoints;
+    private int totalLinesCleared;
 
     public Game(GameMode mode, ScoreManager scoreManager) {
         this.gameMode = mode != null ? mode : GameMode.CLASSIC;
@@ -67,8 +68,18 @@ public class Game {
         lastClearedRows.clear();
         lastClearedCols.clear();
         lastLinePoints = 0;
+        totalLinesCleared = 0;
         Logger.getLogger().log("Game restarted");
         start();
+    }
+
+    // Used when resuming a saved session; values are clamped so a hand-edited file cannot break the timers
+    public void restoreProgress(long elapsedMs, long remainingMs, int linesCleared) {
+        this.elapsedTimeMs = Math.max(0, elapsedMs);
+        if (gameMode == GameMode.TIME_ATTACK) {
+            this.remainingTimeMs = Math.max(0, Math.min(remainingMs, TIME_ATTACK_DURATION_MS));
+        }
+        this.totalLinesCleared = Math.max(0, linesCleared);
     }
 
     public boolean tryPlacePiece(int slotIndex, int gridRow, int gridCol) throws InvalidPlacementException {
@@ -98,6 +109,7 @@ public class Game {
         int lines = lastClearedRows.size() + lastClearedCols.size();
         if (lines > 0) {
             board.clearLines(lastClearedRows, lastClearedCols);
+            totalLinesCleared += lines;
             if (scoreManager != null) {
                 lastLinePoints = scoreManager.addLineClearScore(lines);
             }
@@ -204,5 +216,9 @@ public class Game {
 
     public int getLastLinePoints() {
         return lastLinePoints;
+    }
+
+    public int getTotalLinesCleared() {
+        return totalLinesCleared;
     }
 }

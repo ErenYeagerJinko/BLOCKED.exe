@@ -17,16 +17,18 @@ The player places polyomino block shapes onto an 8×8 grid to clear completed ho
 - **Two Game Modes**:
   - **Classic Mode**: Play until no available tray piece fits on the board; tracks elapsed time.
   - **Time Attack Mode**: 180-second countdown with a target score of 500 points. Player wins upon reaching the target before time runs out.
+- **Scoring**: 1 point per block placed, plus 100 points per cleared line multiplied by the number of lines cleared in the same move (1 line = 100, 2 = 400, 3 = 900).
+- **Pause Without Losing Time**: Game time only advances while playing, so resuming continues exactly where the round stopped.
 - **Polymorphic Animations**:
   - Row & column clear flash/burst effect.
   - Placement pop and bounce effect.
-  - Floating score popup animation (+100, +300).
+  - Floating score popup animation (+100, +400, +900).
 - **Audio System (Java Clip)**:
   - Sound effects for selection, placement, line clear, and invalid move / game over.
   - Interactive Mute / Unmute toggle.
 - **Data Persistence & Logging**:
   - Best score saved locally to `data/best_score.txt`.
-  - Game session state serialization to `data/saved_game.txt` allowing resume from last game state.
+  - Game session state serialization to `data/saved_game.txt`: an unfinished round is saved when returning to the menu or closing the window, and continued with **Resume Game** on the main menu.
   - Timestamped event logging to `logs/app.log`.
 
 ### 👤 Player Profiles, Authentication & Leaderboard
@@ -50,9 +52,10 @@ The player places polyomino block shapes onto an 8×8 grid to clear completed ho
 | **Select Piece** | Click and drag piece from tray | Keys `1`, `2`, or `3` |
 | **Move Preview** | Drag across board | Arrow Keys (`↑`, `↓`, `←`, `→`) |
 | **Place Piece** | Release mouse button on board | `Enter` or `Space` |
-| **Pause / Resume** | Click Pause button | Key `P` |
-| **Restart Game** | Click Restart button | Key `R` |
-| **Mute / Unmute** | Click Sound button | Key `M` |
+| **Pause / Resume** | Click the Pause button in the HUD | Key `P` |
+| **Restart Game** | Click Restart in the pause menu | Key `R` |
+| **Mute / Unmute** | — (status shown in the HUD) | Key `M` |
+| **Resume Saved Game** | Click Resume Game on the main menu | — |
 
 ---
 
@@ -178,6 +181,8 @@ Run the compiled application:
 ```bash
 java -cp bin Main
 ```
+
+The application opens on the **Login** screen. Log in to have your games recorded in your profile and the leaderboard, or click **Leaderboard → Back to Menu** to play as a guest.
 
 ---
 
