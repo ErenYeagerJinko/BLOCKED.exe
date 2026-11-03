@@ -78,7 +78,7 @@ public class GameFrame extends JFrame {
 
     private void wireNavigation() {
         loginPanel.getSwitchToRegisterButton().addActionListener(e -> showScreen("REGISTER"));
-        loginPanel.getBackButton().addActionListener(e -> showScreen("MENU"));
+        loginPanel.getBackButton().addActionListener(e -> showScreen("LEADERBOARD"));
 
         registerPanel.getSwitchToLoginButton().addActionListener(e -> showScreen("LOGIN"));
         registerPanel.getBackButton().addActionListener(e -> showScreen("LOGIN"));
