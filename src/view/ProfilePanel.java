@@ -16,6 +16,7 @@ public class ProfilePanel extends JPanel {
     private JLabel cumulativeScoreLabel;
     private JLabel timePlayedLabel;
     private JLabel statsLabel;
+    private JButton playButton;
     private JButton editProfileButton;
     private JButton leaderboardButton;
     private JButton backButton;
@@ -107,16 +108,28 @@ public class ProfilePanel extends JPanel {
         bioScroll.setMaximumSize(new Dimension(360, 70));
         bioScroll.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 95), 1));
 
-        JPanel buttonsRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
-        buttonsRow.setOpaque(false);
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 125, 38);
-        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.GREEN_BUTTON, 150, 38);
-        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 100, 38);
+        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        topRow.setOpaque(false);
+        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 175, 38);
+        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 175, 38);
+        topRow.add(playButton);
+        topRow.add(leaderboardButton);
 
-        buttonsRow.add(editProfileButton);
-        buttonsRow.add(leaderboardButton);
-        buttonsRow.add(backButton);
+        JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        bottomRow.setOpaque(false);
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 175, 38);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 175, 38);
+        bottomRow.add(editProfileButton);
+        bottomRow.add(backButton);
+
+        buttonsPanel.add(topRow);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(0, 8)));
+        buttonsPanel.add(bottomRow);
 
         card.add(titleLabel);
         card.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -130,7 +143,7 @@ public class ProfilePanel extends JPanel {
         card.add(Box.createRigidArea(new Dimension(0, 4)));
         card.add(bioScroll);
         card.add(Box.createRigidArea(new Dimension(0, 12)));
-        card.add(buttonsRow);
+        card.add(buttonsPanel);
 
         add(card);
     }
@@ -171,6 +184,10 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setIcon(null);
         avatarLabel.setText("👤");
         Logger.getLogger().log("ProfilePanel avatar defaulted to placeholder emoji");
+    }
+
+    public JButton getPlayButton() {
+        return playButton;
     }
 
     public JButton getEditProfileButton() {
