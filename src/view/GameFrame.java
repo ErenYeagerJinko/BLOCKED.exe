@@ -35,8 +35,9 @@ public class GameFrame extends JFrame {
 
     private void initManagers() {
         authManager = new AuthManager();
-        profileManager = new ProfileManager();
-        leaderboardManager = new LeaderboardManager();
+        // Share the login session so profile edits and game stats go to the signed-in player
+        profileManager = new ProfileManager(authManager.getPersistence(), authManager);
+        leaderboardManager = new LeaderboardManager(authManager.getPersistence());
         profileController = new ProfileController(this, profileManager, leaderboardManager);
         persistenceManager = new DataPersistenceManager();
         scoreManager = new ScoreManager(persistenceManager);
