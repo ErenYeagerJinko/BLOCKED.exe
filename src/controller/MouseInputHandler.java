@@ -29,12 +29,12 @@ public class MouseInputHandler extends MouseAdapter {
         }
         Point p = e.getPoint();
         int slot = determineSlotFromPoint(p);
-        if (slot >= 0) {
+        if (slot >= 0 && game != null && game.isPlaying() && game.getTray().hasPiece(slot)) {
             draggedSlot = slot;
             currentDragPoint = p;
             Logger.getLogger().log("Piece grabbed from tray slot " + slot + " at (" + p.x + ", " + p.y + ")");
             if (panel != null) {
-                panel.repaint();
+                panel.selectSlot(slot);
             }
         }
     }
@@ -56,9 +56,11 @@ public class MouseInputHandler extends MouseAdapter {
         }
         if (draggedSlot >= 0) {
             Point p = e.getPoint();
-            Logger.getLogger().log("Piece released from slot " + draggedSlot + " at (" + p.x + ", " + p.y + ")");
+            int slot = draggedSlot;
+            Logger.getLogger().log("Piece released from slot " + slot + " at (" + p.x + ", " + p.y + ")");
             resetDrag();
             if (panel != null) {
+                panel.handleDrop(slot, p);
                 panel.repaint();
             }
         }
