@@ -73,6 +73,15 @@ public class Game {
         start();
     }
 
+    // Used when resuming a saved session; values are clamped so a hand-edited file cannot break the timers
+    public void restoreProgress(long elapsedMs, long remainingMs, int linesCleared) {
+        this.elapsedTimeMs = Math.max(0, elapsedMs);
+        if (gameMode == GameMode.TIME_ATTACK) {
+            this.remainingTimeMs = Math.max(0, Math.min(remainingMs, TIME_ATTACK_DURATION_MS));
+        }
+        this.totalLinesCleared = Math.max(0, linesCleared);
+    }
+
     public boolean tryPlacePiece(int slotIndex, int gridRow, int gridCol) throws InvalidPlacementException {
         tray.setSelectedSlotIndex(slotIndex);
         return tryPlaceSelectedPiece(gridRow, gridCol);
