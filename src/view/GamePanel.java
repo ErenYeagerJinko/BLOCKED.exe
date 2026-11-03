@@ -37,6 +37,7 @@ public class GamePanel extends JPanel {
     private final GameFrame frame;
     private final AnimationManager animationManager;
     private final MouseInputHandler mouseHandler;
+    private final KeyboardInputHandler keyboardHandler;
     private final PauseOverlay pauseOverlay;
     private final JButton pauseButton;
     private final Timer renderTimer;
@@ -51,6 +52,8 @@ public class GamePanel extends JPanel {
         this.mouseHandler = new MouseInputHandler(this, null);
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
+        this.keyboardHandler = new KeyboardInputHandler(this, null, SoundManager.getInstance());
+        addKeyListener(keyboardHandler);
         setOpaque(true);
         setBackground(new Color(18, 18, 32));
         setFocusable(true);
@@ -121,6 +124,7 @@ public class GamePanel extends JPanel {
         this.game = game;
         mouseHandler.setGame(game);
         mouseHandler.resetDrag();
+        keyboardHandler.setGame(game);
         endScreenShown = false;
         pauseOverlay.setVisible(false);
         animationManager.clear();
@@ -177,6 +181,7 @@ public class GamePanel extends JPanel {
         }
         game.getTray().setSelectedSlotIndex(slotIndex);
         SoundManager.getInstance().playSelect();
+        requestFocusInWindow();
         repaint();
     }
 
@@ -254,8 +259,20 @@ public class GamePanel extends JPanel {
         drawBoard(g2d);
         drawTray(g2d);
         animationManager.renderAll(g2d);
-        drawDragPreview(g2d);
+        if (mouseHandler.isDragging()) {
+            drawDragPreview(g2d);
+        } else {
+            drawKeyboardPreview(g2d);
+        }
         g2d.dispose();
+    }
+
+    private void drawKeyboardPreview(Graphics2D g2d) {
+        BlockPiece piece = game.getTray().getSelectedPiece();
+        if (piece == null || !game.isPlaying()) {
+            return;
+        }
+        drawPlacementGhost(g2d, piece, keyboardHandler.getCursorRow(), keyboardHandler.getCursorCol());
     }
 
     private void drawDragPreview(Graphics2D g2d) {
@@ -441,7 +458,7 @@ public class GamePanel extends JPanel {
         return String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60);
     }
 
-    private static int getPieceRows(BlockPiece piece) {
+    public static int getPieceRows(BlockPiece piece) {
         int max = 0;
         for (Cell cell : piece.getCells()) {
             max = Math.max(max, cell.getRow());
@@ -449,7 +466,7 @@ public class GamePanel extends JPanel {
         return max + 1;
     }
 
-    private static int getPieceCols(BlockPiece piece) {
+    public static int getPieceCols(BlockPiece piece) {
         int max = 0;
         for (Cell cell : piece.getCells()) {
             max = Math.max(max, cell.getCol());
