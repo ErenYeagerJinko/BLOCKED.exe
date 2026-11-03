@@ -1,8 +1,10 @@
 package model;
 
 import enums.*;
+import exceptions.*;
 import manager.*;
 import util.*;
+import java.util.*;
 
 public class Game {
     public static final long TIME_ATTACK_DURATION_MS = 180000;
@@ -15,6 +17,9 @@ public class Game {
     private GameState gameState;
     private long elapsedTimeMs;
     private long remainingTimeMs;
+    private java.util.List<Integer> lastClearedRows = new ArrayList<>();
+    private java.util.List<Integer> lastClearedCols = new ArrayList<>();
+    private int lastLinePoints;
 
     public Game(GameMode mode, ScoreManager scoreManager) {
         this.gameMode = mode != null ? mode : GameMode.CLASSIC;
@@ -59,8 +64,66 @@ public class Game {
             scoreManager.resetCurrentScore();
         }
         resetTimers();
+        lastClearedRows.clear();
+        lastClearedCols.clear();
+        lastLinePoints = 0;
         Logger.getLogger().log("Game restarted");
         start();
+    }
+
+    public boolean tryPlacePiece(int slotIndex, int gridRow, int gridCol) throws InvalidPlacementException {
+        tray.setSelectedSlotIndex(slotIndex);
+        return tryPlaceSelectedPiece(gridRow, gridCol);
+    }
+
+    // An invalid placement throws before the tray is touched, so the piece is not consumed
+    public boolean tryPlaceSelectedPiece(int gridRow, int gridCol) throws InvalidPlacementException {
+        if (gameState != GameState.PLAYING) {
+            return false;
+        }
+        int slot = tray.getSelectedSlotIndex();
+        BlockPiece piece = tray.getSelectedPiece();
+        if (piece == null) {
+            return false;
+        }
+
+        board.placePiece(piece, gridRow, gridCol);
+        if (scoreManager != null) {
+            scoreManager.addPlacementScore(piece.getCells().size());
+        }
+
+        lastClearedRows = board.detectCompletedRows();
+        lastClearedCols = board.detectCompletedColumns();
+        lastLinePoints = 0;
+        int lines = lastClearedRows.size() + lastClearedCols.size();
+        if (lines > 0) {
+            board.clearLines(lastClearedRows, lastClearedCols);
+            if (scoreManager != null) {
+                lastLinePoints = scoreManager.addLineClearScore(lines);
+            }
+        }
+
+        tray.consumePiece(slot);
+        checkGameOver();
+        return true;
+    }
+
+    public void checkGameOver() {
+        if (gameState != GameState.PLAYING) {
+            return;
+        }
+        if (gameMode == GameMode.TIME_ATTACK && getCurrentScore() >= TIME_ATTACK_TARGET_SCORE) {
+            Logger.getLogger().log("Time Attack target reached with " + remainingTimeMs + "ms left");
+            endGame(GameState.VICTORY);
+            return;
+        }
+        for (BlockPiece piece : tray.getRemainingPieces()) {
+            if (board.canPieceFitAnywhere(piece)) {
+                return;
+            }
+        }
+        Logger.getLogger().log("No remaining tray piece fits on the board");
+        endGame(GameState.GAME_OVER);
     }
 
     // Time only advances while playing, so a paused game resumes exactly where it stopped
@@ -125,5 +188,21 @@ public class Game {
 
     public long getRemainingTimeMs() {
         return remainingTimeMs;
+    }
+
+    public int getCurrentScore() {
+        return scoreManager != null ? scoreManager.getCurrentScore() : 0;
+    }
+
+    public java.util.List<Integer> getLastClearedRows() {
+        return new ArrayList<>(lastClearedRows);
+    }
+
+    public java.util.List<Integer> getLastClearedCols() {
+        return new ArrayList<>(lastClearedCols);
+    }
+
+    public int getLastLinePoints() {
+        return lastLinePoints;
     }
 }
