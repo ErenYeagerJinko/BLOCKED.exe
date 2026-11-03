@@ -129,8 +129,8 @@ public class UIButtonRenderer {
         if (text != null && !text.isEmpty()) {
             FontMetrics fm = button.getFontMetrics(button.getFont());
             int textWidth = fm.stringWidth(text);
-            if (textWidth + 16 > effectiveWidth) {
-                effectiveWidth = textWidth + 16;
+            if (textWidth + 36 > effectiveWidth) {
+                effectiveWidth = textWidth + 36;
             }
         }
 
@@ -144,6 +144,8 @@ public class UIButtonRenderer {
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
+        button.setMargin(new Insets(0, 4, 0, 4));
+        button.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
 
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);

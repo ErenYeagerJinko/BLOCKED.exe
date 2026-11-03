@@ -1,9 +1,11 @@
 package view;
 
+import audio.*;
 import manager.*;
 import model.*;
 import util.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -16,6 +18,7 @@ public class ProfilePanel extends JPanel {
     private JLabel cumulativeScoreLabel;
     private JLabel timePlayedLabel;
     private JLabel statsLabel;
+    private JButton playButton;
     private JButton editProfileButton;
     private JButton leaderboardButton;
     private JButton backButton;
@@ -42,10 +45,10 @@ public class ProfilePanel extends JPanel {
         card.setBackground(new Color(24, 24, 36, 235));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
-                BorderFactory.createEmptyBorder(25, 30, 25, 30)
+                BorderFactory.createEmptyBorder(22, 28, 22, 28)
         ));
-        card.setPreferredSize(new Dimension(460, 560));
-        card.setMaximumSize(new Dimension(460, 560));
+        card.setPreferredSize(new Dimension(500, 580));
+        card.setMaximumSize(new Dimension(500, 580));
 
         JLabel titleLabel = new JLabel("PLAYER PROFILE");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -59,6 +62,24 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setPreferredSize(new Dimension(96, 96));
         avatarLabel.setMaximumSize(new Dimension(96, 96));
         avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
+        avatarLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        avatarLabel.setToolTipText("Click to update profile picture");
+        avatarLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showAvatarUpdateMenu(avatarLabel, e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(120, 160, 255), 2, true));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
+            }
+        });
 
         usernameLabel = new JLabel("Guest");
         usernameLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 20f));
@@ -70,9 +91,12 @@ public class ProfilePanel extends JPanel {
         statsBox.setBackground(new Color(36, 36, 52));
         statsBox.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(65, 65, 95), 1),
-                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+                BorderFactory.createEmptyBorder(10, 16, 10, 16)
         ));
-        statsBox.setMaximumSize(new Dimension(360, 130));
+        statsBox.setPreferredSize(new Dimension(430, 130));
+        statsBox.setMaximumSize(new Dimension(430, 130));
+        statsBox.setMinimumSize(new Dimension(430, 130));
+        statsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         highestScoreLabel = new JLabel("Highest Score:  0");
         styleStatLabel(highestScoreLabel);
@@ -103,42 +127,116 @@ public class ProfilePanel extends JPanel {
         aboutMeDisplay.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
 
         JScrollPane bioScroll = new JScrollPane(aboutMeDisplay);
-        bioScroll.setPreferredSize(new Dimension(360, 70));
-        bioScroll.setMaximumSize(new Dimension(360, 70));
+        bioScroll.setPreferredSize(new Dimension(430, 65));
+        bioScroll.setMaximumSize(new Dimension(430, 65));
+        bioScroll.setMinimumSize(new Dimension(430, 65));
+        bioScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         bioScroll.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 95), 1));
 
-        JPanel buttonsRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
-        buttonsRow.setOpaque(false);
+        JPanel buttonsPanel = new JPanel(new GridLayout(2, 2, 12, 10));
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setPreferredSize(new Dimension(430, 92));
+        buttonsPanel.setMaximumSize(new Dimension(430, 92));
+        buttonsPanel.setMinimumSize(new Dimension(430, 92));
+        buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 125, 38);
-        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.GREEN_BUTTON, 150, 38);
-        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 100, 38);
+        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 209, 41);
+        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 209, 41);
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 209, 41);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 209, 41);
 
-        buttonsRow.add(editProfileButton);
-        buttonsRow.add(leaderboardButton);
-        buttonsRow.add(backButton);
+        buttonsPanel.add(playButton);
+        buttonsPanel.add(leaderboardButton);
+        buttonsPanel.add(editProfileButton);
+        buttonsPanel.add(backButton);
 
         card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(avatarLabel);
         card.add(Box.createRigidArea(new Dimension(0, 6)));
         card.add(usernameLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(statsBox);
         card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(bioTitle);
         card.add(Box.createRigidArea(new Dimension(0, 4)));
         card.add(bioScroll);
-        card.add(Box.createRigidArea(new Dimension(0, 12)));
-        card.add(buttonsRow);
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(buttonsPanel);
 
         add(card);
     }
 
     private void styleStatLabel(JLabel label) {
-        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
+        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         label.setForeground(new Color(230, 230, 245));
-        label.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
+        label.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+    }
+
+    public void showAvatarUpdateMenu(Component invoker, int x, int y) {
+        SoundManager.getInstance().playSelect();
+        JPopupMenu menu = new JPopupMenu();
+        menu.setBackground(new Color(30, 30, 44));
+        menu.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 120), 1));
+
+        JMenuItem uploadItem = new JMenuItem("Choose New Picture...");
+        uploadItem.setFont(UIButtonRenderer.getFont(Font.BOLD, 12f));
+        uploadItem.setBackground(new Color(30, 30, 44));
+        uploadItem.setForeground(new Color(230, 230, 245));
+        uploadItem.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        uploadItem.addActionListener(e -> handleChooseAvatar());
+
+        JMenuItem removeItem = new JMenuItem("Remove Picture");
+        removeItem.setFont(UIButtonRenderer.getFont(Font.BOLD, 12f));
+        removeItem.setBackground(new Color(30, 30, 44));
+        removeItem.setForeground(new Color(255, 120, 120));
+        removeItem.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        removeItem.addActionListener(e -> handleRemoveAvatar());
+
+        menu.add(uploadItem);
+        menu.add(removeItem);
+        menu.show(invoker, x, y);
+    }
+
+    public void handleChooseAvatar() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Select Profile Picture");
+        chooser.setFileFilter(new FileNameExtensionFilter(
+                "Image Files (*.png, *.jpg, *.jpeg, *.gif, *.bmp)", "png", "jpg", "jpeg", "gif", "bmp"
+        ));
+        int result = chooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (file != null && file.exists()) {
+                String path = file.getAbsolutePath();
+                try {
+                    if (profileManager != null) {
+                        profileManager.updateProfilePicture(path);
+                    }
+                    loadAvatar(path);
+                    Logger.getLogger().log("Profile picture updated to: " + path);
+                } catch (Exception ex) {
+                    Logger.getLogger().error("Failed to update profile picture: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Could not update profile picture: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
+    public void handleRemoveAvatar() {
+        try {
+            if (profileManager != null) {
+                profileManager.updateProfilePicture(null);
+            }
+            loadAvatar(null);
+            Logger.getLogger().log("Profile picture removed, reset to default");
+        } catch (Exception ex) {
+            Logger.getLogger().error("Failed to remove profile picture: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Could not remove profile picture: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void refreshProfile(UserProfile profile) {
@@ -171,6 +269,14 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setIcon(null);
         avatarLabel.setText("👤");
         Logger.getLogger().log("ProfilePanel avatar defaulted to placeholder emoji");
+    }
+
+    public JLabel getAvatarLabel() {
+        return avatarLabel;
+    }
+
+    public JButton getPlayButton() {
+        return playButton;
     }
 
     public JButton getEditProfileButton() {

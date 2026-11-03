@@ -24,7 +24,7 @@ public class UserProfileDialog extends JDialog {
 
     private void initUI(UserProfile profile) {
         setLayout(new BorderLayout(10, 10));
-        setSize(420, 520);
+        setSize(460, 540);
         setLocationRelativeTo(getOwner());
         setResizable(false);
 
@@ -43,8 +43,8 @@ public class UserProfileDialog extends JDialog {
 
         avatarLabel = new JLabel();
         avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        avatarLabel.setPreferredSize(new Dimension(100, 100));
-        avatarLabel.setMaximumSize(new Dimension(100, 100));
+        avatarLabel.setPreferredSize(new Dimension(96, 96));
+        avatarLabel.setMaximumSize(new Dimension(96, 96));
         avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
         loadAvatar(profile != null ? profile.getProfilePicturePath() : null);
 
@@ -52,16 +52,19 @@ public class UserProfileDialog extends JDialog {
         usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         usernameLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
         usernameLabel.setForeground(Color.WHITE);
-        usernameLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0));
+        usernameLabel.setBorder(BorderFactory.createEmptyBorder(8, 0, 12, 0));
 
         JPanel statsPanel = new JPanel();
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBackground(new Color(42, 42, 58));
         statsPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(65, 65, 90), 1),
-                BorderFactory.createEmptyBorder(12, 16, 12, 16)
+                BorderFactory.createEmptyBorder(10, 16, 10, 16)
         ));
-        statsPanel.setMaximumSize(new Dimension(370, 140));
+        statsPanel.setPreferredSize(new Dimension(390, 130));
+        statsPanel.setMaximumSize(new Dimension(390, 130));
+        statsPanel.setMinimumSize(new Dimension(390, 130));
+        statsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         highestScoreLabel = createStatLabel("Highest Score:", profile != null ? String.valueOf(profile.getHighestScore()) : "0");
         cumulativeScoreLabel = createStatLabel("Cumulative Score:", profile != null ? String.valueOf(profile.getTotalCumulativeScore()) : "0");
@@ -76,23 +79,25 @@ public class UserProfileDialog extends JDialog {
         statsPanel.add(statsSummaryLabel);
 
         JLabel bioHeading = new JLabel("About Me");
-        bioHeading.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bioHeading.setFont(UIButtonRenderer.getFont(Font.BOLD, 14f));
+        bioHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bioHeading.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
         bioHeading.setForeground(new Color(180, 180, 210));
-        bioHeading.setBorder(BorderFactory.createEmptyBorder(15, 0, 5, 0));
+        bioHeading.setBorder(BorderFactory.createEmptyBorder(10, 0, 4, 0));
 
         aboutMeArea = new JTextArea(profile != null && !profile.getAboutMe().isEmpty() ? profile.getAboutMe() : "No bio provided.");
         aboutMeArea.setEditable(false);
         aboutMeArea.setLineWrap(true);
         aboutMeArea.setWrapStyleWord(true);
-        aboutMeArea.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
+        aboutMeArea.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         aboutMeArea.setForeground(new Color(220, 220, 235));
         aboutMeArea.setBackground(new Color(24, 24, 34));
-        aboutMeArea.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        aboutMeArea.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
 
         JScrollPane scrollPane = new JScrollPane(aboutMeArea);
-        scrollPane.setMaximumSize(new Dimension(370, 90));
-        scrollPane.setPreferredSize(new Dimension(370, 90));
+        scrollPane.setMaximumSize(new Dimension(390, 75));
+        scrollPane.setPreferredSize(new Dimension(390, 75));
+        scrollPane.setMinimumSize(new Dimension(390, 75));
+        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(60, 60, 80), 1));
 
         mainPanel.add(avatarLabel);
@@ -103,7 +108,7 @@ public class UserProfileDialog extends JDialog {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
-        closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 130, 38);
+        closeButton = UIButtonRenderer.createButton("Close", UIButtonRenderer.BACK_BUTTON, 180, 40);
         closeButton.addActionListener(e -> {
             Logger.getLogger().log("UserProfileDialog closed");
             dispose();
@@ -116,9 +121,10 @@ public class UserProfileDialog extends JDialog {
 
     private JLabel createStatLabel(String title, String value) {
         JLabel label = new JLabel(title + "  " + value);
-        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
+        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         label.setForeground(new Color(230, 230, 245));
-        label.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
+        label.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
     }
 

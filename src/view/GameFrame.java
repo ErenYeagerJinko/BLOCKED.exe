@@ -1,5 +1,6 @@
 package view;
 
+import audio.*;
 import controller.*;
 import enums.*;
 import manager.*;
@@ -90,19 +91,55 @@ public class GameFrame extends JFrame {
         registerPanel.getSwitchToLoginButton().addActionListener(e -> showScreen("LOGIN"));
         registerPanel.getBackButton().addActionListener(e -> showScreen("LOGIN"));
 
-        profilePanel.getLeaderboardButton().addActionListener(e -> showScreen("LEADERBOARD"));
-        profilePanel.getBackButton().addActionListener(e -> showScreen("MENU"));
+        profilePanel.getPlayButton().addActionListener(e -> {
+            SoundManager.getInstance().playSelect();
+            showScreen("MENU");
+        });
+        profilePanel.getLeaderboardButton().addActionListener(e -> {
+            SoundManager.getInstance().playSelect();
+            showScreen("LEADERBOARD");
+        });
+        profilePanel.getBackButton().addActionListener(e -> {
+            SoundManager.getInstance().playSelect();
+            if (isGameActive()) {
+                showScreen("MENU");
+            } else {
+                if (authManager != null) {
+                    authManager.logout();
+                }
+                if (loginPanel != null) {
+                    loginPanel.clearFields();
+                }
+                showScreen("LOGIN");
+            }
+        });
         profilePanel.getEditProfileButton().addActionListener(e -> {
             UserProfile user = authManager != null ? authManager.getCurrentUser() : null;
             if (user != null) {
-                String currentBio = user.getAboutMe() != null ? user.getAboutMe() : "";
-                String newBio = JOptionPane.showInputDialog(this, "Enter new bio:", currentBio);
-                if (newBio != null && profileManager != null) {
-                    try {
-                        profileManager.updateAboutMe(newBio.trim());
-                        profilePanel.refreshProfile(user);
-                    } catch (Exception ignored) {
+                String[] options = {"Edit Bio", "Change Profile Picture", "Remove Profile Picture", "Cancel"};
+                int choice = JOptionPane.showOptionDialog(this,
+                        "What would you like to update?",
+                        "Edit Profile",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+
+                if (choice == 0) {
+                    String currentBio = user.getAboutMe() != null ? user.getAboutMe() : "";
+                    String newBio = JOptionPane.showInputDialog(this, "Enter new bio:", currentBio);
+                    if (newBio != null && profileManager != null) {
+                        try {
+                            profileManager.updateAboutMe(newBio.trim());
+                            profilePanel.refreshProfile(user);
+                        } catch (Exception ignored) {
+                        }
                     }
+                } else if (choice == 1) {
+                    profilePanel.handleChooseAvatar();
+                } else if (choice == 2) {
+                    profilePanel.handleRemoveAvatar();
                 }
             }
         });
@@ -126,6 +163,11 @@ public class GameFrame extends JFrame {
             mainMenuPanel.refreshResumeButton();
         }
         cardLayout.show(cardPanel, screenName);
+    }
+
+    public boolean isGameActive() {
+        Game current = gamePanel != null ? gamePanel.getGame() : null;
+        return current != null && !current.isOver();
     }
 
     public void startNewGame(GameMode mode) {
