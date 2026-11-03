@@ -4,6 +4,7 @@ import controller.*;
 import enums.*;
 import manager.*;
 import model.*;
+import persistence.*;
 import util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,11 @@ public class GameFrame extends JFrame {
     private ProfilePanel profilePanel;
     private LeaderboardPanel leaderboardPanel;
     private GameOverOverlay gameOverOverlay;
+    private DataPersistenceManager persistenceManager;
+    private ScoreManager scoreManager;
+    private MainMenuPanel mainMenuPanel;
+    private InstructionsPanel instructionsPanel;
+    private GamePanel gamePanel;
 
     public GameFrame() {
         initManagers();
@@ -32,6 +38,8 @@ public class GameFrame extends JFrame {
         profileManager = new ProfileManager();
         leaderboardManager = new LeaderboardManager();
         profileController = new ProfileController(this, profileManager, leaderboardManager);
+        persistenceManager = new DataPersistenceManager();
+        scoreManager = new ScoreManager(persistenceManager);
     }
 
     private void initUI() {
@@ -48,10 +56,16 @@ public class GameFrame extends JFrame {
         registerPanel = new RegisterPanel(this, authManager);
         profilePanel = new ProfilePanel(this, profileManager);
         leaderboardPanel = new LeaderboardPanel(this, leaderboardManager, profileController);
-        gameOverOverlay = new GameOverOverlay(null);
+        mainMenuPanel = new MainMenuPanel(this, persistenceManager);
+        instructionsPanel = new InstructionsPanel(this);
+        gamePanel = new GamePanel(this);
+        gameOverOverlay = new GameOverOverlay(gamePanel);
 
         wireNavigation();
 
+        cardPanel.add(mainMenuPanel, "MENU");
+        cardPanel.add(instructionsPanel, "INSTRUCTIONS");
+        cardPanel.add(gamePanel, "GAME");
         cardPanel.add(loginPanel, "LOGIN");
         cardPanel.add(registerPanel, "REGISTER");
         cardPanel.add(profilePanel, "PROFILE");
@@ -64,13 +78,13 @@ public class GameFrame extends JFrame {
 
     private void wireNavigation() {
         loginPanel.getSwitchToRegisterButton().addActionListener(e -> showScreen("REGISTER"));
-        loginPanel.getBackButton().addActionListener(e -> showScreen("LEADERBOARD"));
+        loginPanel.getBackButton().addActionListener(e -> showScreen("MENU"));
 
         registerPanel.getSwitchToLoginButton().addActionListener(e -> showScreen("LOGIN"));
         registerPanel.getBackButton().addActionListener(e -> showScreen("LOGIN"));
 
         profilePanel.getLeaderboardButton().addActionListener(e -> showScreen("LEADERBOARD"));
-        profilePanel.getBackButton().addActionListener(e -> showScreen("LOGIN"));
+        profilePanel.getBackButton().addActionListener(e -> showScreen("MENU"));
         profilePanel.getEditProfileButton().addActionListener(e -> {
             UserProfile user = authManager != null ? authManager.getCurrentUser() : null;
             if (user != null) {
@@ -86,10 +100,10 @@ public class GameFrame extends JFrame {
             }
         });
 
-        leaderboardPanel.getBackButton().addActionListener(e -> showScreen("LOGIN"));
+        leaderboardPanel.getBackButton().addActionListener(e -> showScreen("MENU"));
 
-        gameOverOverlay.getMenuButton().addActionListener(e -> showScreen("LOGIN"));
-        gameOverOverlay.getRestartButton().addActionListener(e -> showScreen("LEADERBOARD"));
+        gameOverOverlay.getMenuButton().addActionListener(e -> returnToMenu());
+        gameOverOverlay.getRestartButton().addActionListener(e -> restartGame());
     }
 
     public void showScreen(String screenName) {
@@ -107,7 +121,22 @@ public class GameFrame extends JFrame {
 
     public void startNewGame(GameMode mode) {
         Logger.getLogger().log("New game starting with mode: " + mode);
-        showScreen("LEADERBOARD");
+        scoreManager.resetCurrentScore();
+        Game game = new Game(mode, scoreManager);
+        game.start();
+        gamePanel.setGame(game);
+        showScreen("GAME");
+        gamePanel.requestFocusInWindow();
+    }
+
+    public void restartGame() {
+        Game current = gamePanel.getGame();
+        startNewGame(current != null ? current.getGameMode() : GameMode.CLASSIC);
+    }
+
+    public void returnToMenu() {
+        gamePanel.stopRendering();
+        showScreen("MENU");
     }
 
     public void resumeSavedGame() {
