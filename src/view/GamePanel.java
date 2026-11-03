@@ -2,7 +2,9 @@ package view;
 
 import animation.*;
 import audio.*;
+import controller.*;
 import enums.*;
+import exceptions.*;
 import manager.*;
 import model.*;
 import util.*;
@@ -28,9 +30,12 @@ public class GamePanel extends JPanel {
     private static final Color EMPTY_CELL = new Color(255, 255, 255, 25);
     private static final Color HUD_LABEL = new Color(170, 180, 220);
     private static final Color SELECTED_SLOT = new Color(255, 215, 0);
+    private static final Color INVALID_PREVIEW = new Color(255, 70, 70, 150);
+    private static final long LINE_CLEAR_FLASH_MS = 400;
 
     private final GameFrame frame;
     private final AnimationManager animationManager;
+    private final MouseInputHandler mouseHandler;
     private final Timer renderTimer;
     private Game game;
     private long lastTickNanos;
@@ -39,6 +44,9 @@ public class GamePanel extends JPanel {
         this.frame = frame;
         this.animationManager = new AnimationManager();
         this.renderTimer = new Timer(1000 / FPS, e -> tick());
+        this.mouseHandler = new MouseInputHandler(this, null);
+        addMouseListener(mouseHandler);
+        addMouseMotionListener(mouseHandler);
         setOpaque(true);
         setBackground(new Color(18, 18, 32));
         setFocusable(true);
@@ -46,6 +54,8 @@ public class GamePanel extends JPanel {
 
     public void setGame(Game game) {
         this.game = game;
+        mouseHandler.setGame(game);
+        mouseHandler.resetDrag();
         animationManager.clear();
         lastTickNanos = System.nanoTime();
         if (!renderTimer.isRunning()) {
@@ -70,6 +80,74 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+    public void selectSlot(int slotIndex) {
+        if (game == null || !game.isPlaying() || !game.getTray().hasPiece(slotIndex)) {
+            return;
+        }
+        game.getTray().setSelectedSlotIndex(slotIndex);
+        SoundManager.getInstance().playSelect();
+        repaint();
+    }
+
+    // Drops outside the board cancel the drag instead of counting as an invalid move
+    public void handleDrop(int slotIndex, Point dropPoint) {
+        BlockPiece piece = game != null ? game.getTray().getPiece(slotIndex) : null;
+        if (piece == null || dropPoint == null || !isOverBoard(dropPoint)) {
+            return;
+        }
+        int[] cell = getDropCell(piece, dropPoint);
+        handlePiecePlacement(slotIndex, cell[0], cell[1]);
+    }
+
+    public void handlePiecePlacement(int slotIndex, int gridRow, int gridCol) {
+        if (game == null || !game.isPlaying()) {
+            return;
+        }
+        BlockPiece piece = game.getTray().getPiece(slotIndex);
+        if (piece == null) {
+            return;
+        }
+
+        try {
+            if (!game.tryPlacePiece(slotIndex, gridRow, gridCol)) {
+                return;
+            }
+        } catch (InvalidPlacementException e) {
+            SoundManager.getInstance().playInvalid();
+            return;
+        }
+
+        int cellSize = getCellSize();
+        int originX = getBoardOriginX();
+        int originY = getBoardOriginY();
+        animationManager.addAnimation(new PlacementPopAnimation(piece, gridRow, gridCol, originX, originY, cellSize));
+        SoundManager.getInstance().playPlace();
+
+        int linePoints = game.getLastLinePoints();
+        if (linePoints > 0) {
+            int boardCenter = cellSize * Board.GRID_SIZE / 2;
+            animationManager.addAnimation(new RowClearAnimation(game.getLastClearedRows(), game.getLastClearedCols(),
+                    originX, originY, cellSize, LINE_CLEAR_FLASH_MS));
+            animationManager.addAnimation(new ScorePopupAnimation(linePoints, originX + boardCenter, originY + boardCenter));
+            SoundManager.getInstance().playClear();
+        }
+        repaint();
+    }
+
+    // Top-left board cell for a piece held by its centre, returned as {row, col}
+    public int[] getDropCell(BlockPiece piece, Point p) {
+        int cellSize = getCellSize();
+        double col = (p.x - getBoardOriginX()) / (double) cellSize - getPieceCols(piece) / 2.0;
+        double row = (p.y - getBoardOriginY()) / (double) cellSize - getPieceRows(piece) / 2.0;
+        return new int[] {(int) Math.round(row), (int) Math.round(col)};
+    }
+
+    private boolean isOverBoard(Point p) {
+        int boardPx = getCellSize() * Board.GRID_SIZE;
+        return p.x >= getBoardOriginX() && p.x < getBoardOriginX() + boardPx
+                && p.y >= getBoardOriginY() && p.y < getBoardOriginY() + boardPx;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -85,7 +163,63 @@ public class GamePanel extends JPanel {
         drawBoard(g2d);
         drawTray(g2d);
         animationManager.renderAll(g2d);
+        drawDragPreview(g2d);
         g2d.dispose();
+    }
+
+    private void drawDragPreview(Graphics2D g2d) {
+        Point p = mouseHandler.getCurrentDragPoint();
+        BlockPiece piece = game.getTray().getPiece(mouseHandler.getDraggedSlot());
+        if (piece == null || p == null || !game.isPlaying()) {
+            return;
+        }
+
+        if (isOverBoard(p)) {
+            int[] cell = getDropCell(piece, p);
+            drawPlacementGhost(g2d, piece, cell[0], cell[1]);
+            return;
+        }
+
+        int size = getCellSize();
+        int startX = p.x - getPieceCols(piece) * size / 2;
+        int startY = p.y - getPieceRows(piece) * size / 2;
+        Composite original = g2d.getComposite();
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.85f));
+        for (Cell cell : piece.getCells()) {
+            drawBlock(g2d, startX + cell.getCol() * size, startY + cell.getRow() * size, size, piece.getColor());
+        }
+        g2d.setComposite(original);
+    }
+
+    // Shows the snapped piece faded where it fits, or red cells where it would collide
+    private void drawPlacementGhost(Graphics2D g2d, BlockPiece piece, int gridRow, int gridCol) {
+        boolean valid = game.getBoard().isValidPlacement(piece, gridRow, gridCol);
+        int cellSize = getCellSize();
+        Composite original = g2d.getComposite();
+        for (Cell cell : piece.getCells()) {
+            int r = gridRow + cell.getRow();
+            int c = gridCol + cell.getCol();
+            if (r < 0 || r >= Board.GRID_SIZE || c < 0 || c >= Board.GRID_SIZE) {
+                continue;
+            }
+            int x = getBoardOriginX() + c * cellSize;
+            int y = getBoardOriginY() + r * cellSize;
+            if (valid) {
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.55f));
+                drawBlock(g2d, x, y, cellSize, piece.getColor());
+                g2d.setComposite(original);
+            } else {
+                g2d.setColor(INVALID_PREVIEW);
+                g2d.fillRoundRect(x + 2, y + 2, cellSize - 4, cellSize - 4, 8, 8);
+                g2d.setColor(Color.WHITE);
+                g2d.setStroke(new BasicStroke(2.5f));
+                g2d.drawRoundRect(x + 3, y + 3, cellSize - 6, cellSize - 6, 8, 8);
+                g2d.drawLine(x + 12, y + 12, x + cellSize - 12, y + cellSize - 12);
+                g2d.drawLine(x + cellSize - 12, y + 12, x + 12, y + cellSize - 12);
+                g2d.setStroke(new BasicStroke(1f));
+            }
+        }
+        g2d.setComposite(original);
     }
 
     private void drawBoard(Graphics2D g2d) {
@@ -140,7 +274,7 @@ public class GamePanel extends JPanel {
             g2d.drawString(String.valueOf(i + 1), slotX + 8, slotY + 18);
 
             BlockPiece piece = tray.getPiece(i);
-            if (piece != null) {
+            if (piece != null && i != mouseHandler.getDraggedSlot()) {
                 drawPieceCentered(g2d, piece, slotX, slotY, TRAY_SLOT_WIDTH, slotHeight);
             }
         }
