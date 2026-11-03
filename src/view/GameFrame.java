@@ -116,14 +116,30 @@ public class GameFrame extends JFrame {
         profilePanel.getEditProfileButton().addActionListener(e -> {
             UserProfile user = authManager != null ? authManager.getCurrentUser() : null;
             if (user != null) {
-                String currentBio = user.getAboutMe() != null ? user.getAboutMe() : "";
-                String newBio = JOptionPane.showInputDialog(this, "Enter new bio:", currentBio);
-                if (newBio != null && profileManager != null) {
-                    try {
-                        profileManager.updateAboutMe(newBio.trim());
-                        profilePanel.refreshProfile(user);
-                    } catch (Exception ignored) {
+                String[] options = {"Edit Bio", "Change Profile Picture", "Remove Profile Picture", "Cancel"};
+                int choice = JOptionPane.showOptionDialog(this,
+                        "What would you like to update?",
+                        "Edit Profile",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+
+                if (choice == 0) {
+                    String currentBio = user.getAboutMe() != null ? user.getAboutMe() : "";
+                    String newBio = JOptionPane.showInputDialog(this, "Enter new bio:", currentBio);
+                    if (newBio != null && profileManager != null) {
+                        try {
+                            profileManager.updateAboutMe(newBio.trim());
+                            profilePanel.refreshProfile(user);
+                        } catch (Exception ignored) {
+                        }
                     }
+                } else if (choice == 1) {
+                    profilePanel.handleChooseAvatar();
+                } else if (choice == 2) {
+                    profilePanel.handleRemoveAvatar();
                 }
             }
         });

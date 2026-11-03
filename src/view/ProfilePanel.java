@@ -1,9 +1,11 @@
 package view;
 
+import audio.*;
 import manager.*;
 import model.*;
 import util.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -60,6 +62,24 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setPreferredSize(new Dimension(96, 96));
         avatarLabel.setMaximumSize(new Dimension(96, 96));
         avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
+        avatarLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        avatarLabel.setToolTipText("Click to update profile picture");
+        avatarLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showAvatarUpdateMenu(avatarLabel, e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(120, 160, 255), 2, true));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                avatarLabel.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 110), 2, true));
+            }
+        });
 
         usernameLabel = new JLabel("Guest");
         usernameLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 20f));
@@ -162,6 +182,71 @@ public class ProfilePanel extends JPanel {
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
+    public void showAvatarUpdateMenu(Component invoker, int x, int y) {
+        SoundManager.getInstance().playSelect();
+        JPopupMenu menu = new JPopupMenu();
+        menu.setBackground(new Color(30, 30, 44));
+        menu.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 120), 1));
+
+        JMenuItem uploadItem = new JMenuItem("Choose New Picture...");
+        uploadItem.setFont(UIButtonRenderer.getFont(Font.BOLD, 12f));
+        uploadItem.setBackground(new Color(30, 30, 44));
+        uploadItem.setForeground(new Color(230, 230, 245));
+        uploadItem.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        uploadItem.addActionListener(e -> handleChooseAvatar());
+
+        JMenuItem removeItem = new JMenuItem("Remove Picture");
+        removeItem.setFont(UIButtonRenderer.getFont(Font.BOLD, 12f));
+        removeItem.setBackground(new Color(30, 30, 44));
+        removeItem.setForeground(new Color(255, 120, 120));
+        removeItem.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        removeItem.addActionListener(e -> handleRemoveAvatar());
+
+        menu.add(uploadItem);
+        menu.add(removeItem);
+        menu.show(invoker, x, y);
+    }
+
+    public void handleChooseAvatar() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Select Profile Picture");
+        chooser.setFileFilter(new FileNameExtensionFilter(
+                "Image Files (*.png, *.jpg, *.jpeg, *.gif, *.bmp)", "png", "jpg", "jpeg", "gif", "bmp"
+        ));
+        int result = chooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (file != null && file.exists()) {
+                String path = file.getAbsolutePath();
+                try {
+                    if (profileManager != null) {
+                        profileManager.updateProfilePicture(path);
+                    }
+                    loadAvatar(path);
+                    Logger.getLogger().log("Profile picture updated to: " + path);
+                } catch (Exception ex) {
+                    Logger.getLogger().error("Failed to update profile picture: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "Could not update profile picture: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
+
+    public void handleRemoveAvatar() {
+        try {
+            if (profileManager != null) {
+                profileManager.updateProfilePicture(null);
+            }
+            loadAvatar(null);
+            Logger.getLogger().log("Profile picture removed, reset to default");
+        } catch (Exception ex) {
+            Logger.getLogger().error("Failed to remove profile picture: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Could not remove profile picture: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void refreshProfile(UserProfile profile) {
         if (profile == null) {
             Logger.getLogger().log("ProfilePanel refresh skipped: null profile");
@@ -192,6 +277,10 @@ public class ProfilePanel extends JPanel {
         avatarLabel.setIcon(null);
         avatarLabel.setText("👤");
         Logger.getLogger().log("ProfilePanel avatar defaulted to placeholder emoji");
+    }
+
+    public JLabel getAvatarLabel() {
+        return avatarLabel;
     }
 
     public JButton getPlayButton() {

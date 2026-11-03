@@ -1,6 +1,6 @@
 mode=CLASSIC
 score=11
-elapsed=11514
+elapsed=16194
 remaining=0
 lines=0
 tray=LINE_1X4,LINE_2X1,S_HORIZONTAL
