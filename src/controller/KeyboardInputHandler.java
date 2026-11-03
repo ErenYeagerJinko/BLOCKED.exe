@@ -23,7 +23,14 @@ public class KeyboardInputHandler extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (game == null || panel == null || !game.isPlaying()) {
+        if (game == null || panel == null) {
+            return;
+        }
+        if (handleHotkey(e.getKeyCode())) {
+            panel.repaint();
+            return;
+        }
+        if (!game.isPlaying()) {
             return;
         }
 
@@ -60,6 +67,28 @@ public class KeyboardInputHandler extends KeyAdapter {
                 return;
         }
         panel.repaint();
+    }
+
+    // Pause, restart and mute stay available while paused, unlike piece controls
+    private boolean handleHotkey(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_P:
+                if (!game.isOver()) {
+                    panel.togglePause();
+                }
+                return true;
+            case KeyEvent.VK_R:
+                Logger.getLogger().log("Restart requested from keyboard");
+                panel.restartGame();
+                return true;
+            case KeyEvent.VK_M:
+                if (soundManager != null) {
+                    soundManager.toggleMute();
+                }
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void selectSlot(int slotIndex) {
