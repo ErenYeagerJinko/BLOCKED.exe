@@ -25,6 +25,7 @@ public class GamePanel extends JPanel {
     private static final int BOARD_MARGIN = 20;
     private static final String SLOT_IMAGE = "resources/UI/slot/background.png";
     private static final String STAR_IMAGE = "resources/UI/best/star.png";
+    private static final String PAUSE_BUTTON_IMAGE = "resources/UI/pause/button.png";
 
     private static final Color BOARD_BACKGROUND = new Color(10, 14, 40, 210);
     private static final Color EMPTY_CELL = new Color(255, 255, 255, 25);
@@ -36,6 +37,8 @@ public class GamePanel extends JPanel {
     private final GameFrame frame;
     private final AnimationManager animationManager;
     private final MouseInputHandler mouseHandler;
+    private final PauseOverlay pauseOverlay;
+    private final JButton pauseButton;
     private final Timer renderTimer;
     private Game game;
     private long lastTickNanos;
@@ -51,6 +54,67 @@ public class GamePanel extends JPanel {
         setOpaque(true);
         setBackground(new Color(18, 18, 32));
         setFocusable(true);
+
+        setLayout(null);
+        pauseOverlay = new PauseOverlay(this);
+        pauseOverlay.setVisible(false);
+        pauseButton = UIButtonRenderer.createButton("Pause", PAUSE_BUTTON_IMAGE, 100, 30);
+        pauseButton.setFocusable(false);
+        pauseButton.addActionListener(e -> togglePause());
+        add(pauseOverlay);
+        add(pauseButton);
+    }
+
+    @Override
+    public void doLayout() {
+        pauseOverlay.setBounds(0, 0, getWidth(), getHeight());
+        pauseButton.setBounds(getWidth() - 130, 68, 100, 26);
+    }
+
+    public void togglePause() {
+        if (game == null) {
+            return;
+        }
+        if (game.isPlaying()) {
+            pauseGame();
+        } else {
+            resumeGame();
+        }
+    }
+
+    public void pauseGame() {
+        if (game == null || !game.isPlaying()) {
+            return;
+        }
+        game.pause();
+        mouseHandler.resetDrag();
+        pauseOverlay.setVisible(true);
+        repaint();
+    }
+
+    public void resumeGame() {
+        if (game == null || game.getGameState() != GameState.PAUSED) {
+            return;
+        }
+        game.resume();
+        // Restart the frame clock so no paused time leaks into the first tick
+        lastTickNanos = System.nanoTime();
+        pauseOverlay.setVisible(false);
+        requestFocusInWindow();
+        repaint();
+    }
+
+    public void restartGame() {
+        if (frame != null) {
+            frame.restartGame();
+        }
+    }
+
+    public void goToMenu() {
+        pauseOverlay.setVisible(false);
+        if (frame != null) {
+            frame.returnToMenu();
+        }
     }
 
     public void setGame(Game game) {
@@ -58,6 +122,7 @@ public class GamePanel extends JPanel {
         mouseHandler.setGame(game);
         mouseHandler.resetDrag();
         endScreenShown = false;
+        pauseOverlay.setVisible(false);
         animationManager.clear();
         lastTickNanos = System.nanoTime();
         if (!renderTimer.isRunning()) {
@@ -93,6 +158,7 @@ public class GamePanel extends JPanel {
         endScreenShown = true;
         stopRendering();
         mouseHandler.resetDrag();
+        pauseOverlay.setVisible(false);
 
         boolean victory = game.getGameState() == GameState.VICTORY;
         if (!victory) {
