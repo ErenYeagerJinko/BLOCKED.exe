@@ -41,10 +41,10 @@ public class LeaderboardPanel extends JPanel {
         card.setBackground(new Color(24, 24, 36, 235));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
-                BorderFactory.createEmptyBorder(20, 25, 20, 25)
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
-        card.setPreferredSize(new Dimension(520, 560));
-        card.setMaximumSize(new Dimension(520, 560));
+        card.setPreferredSize(new Dimension(600, 580));
+        card.setMaximumSize(new Dimension(600, 580));
 
         JLabel titleLabel = new JLabel("TOP PLAYERS LEADERBOARD", SwingConstants.CENTER);
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -55,19 +55,19 @@ public class LeaderboardPanel extends JPanel {
         topSection.setOpaque(false);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         topSection.add(titleLabel);
-        topSection.add(Box.createRigidArea(new Dimension(0, 10)));
+        topSection.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
+        JPanel filterRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
         filterRow.setOpaque(false);
 
-        filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 180, 40);
+        filterHighestButton = UIButtonRenderer.createButton("Highest Score", UIButtonRenderer.BLUE_BUTTON, 250, 42);
         filterHighestButton.addActionListener(e -> {
             Logger.getLogger().log("Leaderboard filter changed to Highest Score");
             showingHighest = true;
             loadLeaderboardData();
         });
 
-        filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 190, 40);
+        filterCumulativeButton = UIButtonRenderer.createButton("Cumulative Score", UIButtonRenderer.NEUTRAL_BUTTON, 250, 42);
         filterCumulativeButton.addActionListener(e -> {
             Logger.getLogger().log("Leaderboard filter changed to Cumulative Score");
             showingHighest = false;
@@ -97,21 +97,31 @@ public class LeaderboardPanel extends JPanel {
         leaderboardTable.setIntercellSpacing(new Dimension(0, 1));
 
         JTableHeader header = leaderboardTable.getTableHeader();
-        header.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
+        header.setFont(UIButtonRenderer.getFont(Font.BOLD, 12.5f));
         header.setBackground(new Color(45, 45, 68));
         header.setForeground(Color.WHITE);
-        header.setPreferredSize(new Dimension(0, 30));
+        header.setPreferredSize(new Dimension(0, 32));
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        leaderboardTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+
+        leaderboardTable.getColumnModel().getColumn(0).setPreferredWidth(65);
+        leaderboardTable.getColumnModel().getColumn(0).setMinWidth(55);
         leaderboardTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        leaderboardTable.getColumnModel().getColumn(1).setPreferredWidth(140);
-        leaderboardTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+
+        leaderboardTable.getColumnModel().getColumn(1).setPreferredWidth(170);
+        leaderboardTable.getColumnModel().getColumn(1).setMinWidth(140);
+
+        leaderboardTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        leaderboardTable.getColumnModel().getColumn(2).setMinWidth(90);
         leaderboardTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        leaderboardTable.getColumnModel().getColumn(3).setPreferredWidth(90);
+
+        leaderboardTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+        leaderboardTable.getColumnModel().getColumn(3).setMinWidth(90);
         leaderboardTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-        leaderboardTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+
+        leaderboardTable.getColumnModel().getColumn(4).setPreferredWidth(125);
+        leaderboardTable.getColumnModel().getColumn(4).setMinWidth(115);
         leaderboardTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 
         if (profileController != null) {
@@ -125,7 +135,7 @@ public class LeaderboardPanel extends JPanel {
 
         JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomRow.setOpaque(false);
-        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 210, 42);
+        backButton = UIButtonRenderer.createButton("Back to Menu", UIButtonRenderer.BACK_BUTTON, 250, 42);
         bottomRow.add(backButton);
 
         card.add(topSection, BorderLayout.NORTH);

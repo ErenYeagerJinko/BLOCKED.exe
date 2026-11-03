@@ -43,10 +43,10 @@ public class ProfilePanel extends JPanel {
         card.setBackground(new Color(24, 24, 36, 235));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(80, 80, 120), 2, true),
-                BorderFactory.createEmptyBorder(25, 30, 25, 30)
+                BorderFactory.createEmptyBorder(22, 28, 22, 28)
         ));
-        card.setPreferredSize(new Dimension(460, 560));
-        card.setMaximumSize(new Dimension(460, 560));
+        card.setPreferredSize(new Dimension(500, 580));
+        card.setMaximumSize(new Dimension(500, 580));
 
         JLabel titleLabel = new JLabel("PLAYER PROFILE");
         titleLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 22f));
@@ -71,9 +71,12 @@ public class ProfilePanel extends JPanel {
         statsBox.setBackground(new Color(36, 36, 52));
         statsBox.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(65, 65, 95), 1),
-                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+                BorderFactory.createEmptyBorder(10, 16, 10, 16)
         ));
-        statsBox.setMaximumSize(new Dimension(360, 130));
+        statsBox.setPreferredSize(new Dimension(430, 130));
+        statsBox.setMaximumSize(new Dimension(430, 130));
+        statsBox.setMinimumSize(new Dimension(430, 130));
+        statsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         highestScoreLabel = new JLabel("Highest Score:  0");
         styleStatLabel(highestScoreLabel);
@@ -104,8 +107,10 @@ public class ProfilePanel extends JPanel {
         aboutMeDisplay.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
 
         JScrollPane bioScroll = new JScrollPane(aboutMeDisplay);
-        bioScroll.setPreferredSize(new Dimension(360, 70));
-        bioScroll.setMaximumSize(new Dimension(360, 70));
+        bioScroll.setPreferredSize(new Dimension(430, 65));
+        bioScroll.setMaximumSize(new Dimension(430, 65));
+        bioScroll.setMinimumSize(new Dimension(430, 65));
+        bioScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         bioScroll.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 95), 1));
 
         JPanel buttonsPanel = new JPanel();
@@ -113,17 +118,19 @@ public class ProfilePanel extends JPanel {
         buttonsPanel.setOpaque(false);
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
         topRow.setOpaque(false);
-        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 175, 38);
-        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 175, 38);
+        topRow.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 208, 40);
+        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 208, 40);
         topRow.add(playButton);
         topRow.add(leaderboardButton);
 
-        JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
         bottomRow.setOpaque(false);
-        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 175, 38);
-        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 175, 38);
+        bottomRow.setAlignmentX(Component.CENTER_ALIGNMENT);
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 208, 40);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 208, 40);
         bottomRow.add(editProfileButton);
         bottomRow.add(backButton);
 
@@ -132,26 +139,27 @@ public class ProfilePanel extends JPanel {
         buttonsPanel.add(bottomRow);
 
         card.add(titleLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(avatarLabel);
         card.add(Box.createRigidArea(new Dimension(0, 6)));
         card.add(usernameLabel);
-        card.add(Box.createRigidArea(new Dimension(0, 10)));
+        card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(statsBox);
         card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(bioTitle);
         card.add(Box.createRigidArea(new Dimension(0, 4)));
         card.add(bioScroll);
-        card.add(Box.createRigidArea(new Dimension(0, 12)));
+        card.add(Box.createRigidArea(new Dimension(0, 10)));
         card.add(buttonsPanel);
 
         add(card);
     }
 
     private void styleStatLabel(JLabel label) {
-        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 13f));
+        label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 12f));
         label.setForeground(new Color(230, 230, 245));
-        label.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
+        label.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
     public void refreshProfile(UserProfile profile) {
