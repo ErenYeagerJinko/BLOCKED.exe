@@ -39,6 +39,7 @@ public class GamePanel extends JPanel {
     private final Timer renderTimer;
     private Game game;
     private long lastTickNanos;
+    private boolean endScreenShown;
 
     public GamePanel(GameFrame frame) {
         this.frame = frame;
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel {
         this.game = game;
         mouseHandler.setGame(game);
         mouseHandler.resetDrag();
+        endScreenShown = false;
         animationManager.clear();
         lastTickNanos = System.nanoTime();
         if (!renderTimer.isRunning()) {
@@ -77,7 +79,30 @@ public class GamePanel extends JPanel {
             game.updateTime(deltaMs);
         }
         animationManager.update(deltaMs);
+        if (game != null && game.isOver() && !animationManager.hasActiveAnimations()) {
+            showEndScreen();
+        }
         repaint();
+    }
+
+    // Waits for running animations to finish so the final move stays visible
+    private void showEndScreen() {
+        if (endScreenShown) {
+            return;
+        }
+        endScreenShown = true;
+        stopRendering();
+        mouseHandler.resetDrag();
+
+        boolean victory = game.getGameState() == GameState.VICTORY;
+        if (!victory) {
+            SoundManager.getInstance().playGameOver();
+        }
+        ScoreManager scoreManager = game.getScoreManager();
+        int best = scoreManager != null ? scoreManager.getBestScore() : game.getCurrentScore();
+        if (frame != null) {
+            frame.showGameOver(game.getCurrentScore(), best, victory);
+        }
     }
 
     public void selectSlot(int slotIndex) {
