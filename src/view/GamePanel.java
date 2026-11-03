@@ -171,6 +171,7 @@ public class GamePanel extends JPanel {
         ScoreManager scoreManager = game.getScoreManager();
         int best = scoreManager != null ? scoreManager.getBestScore() : game.getCurrentScore();
         if (frame != null) {
+            frame.recordFinishedGame(game);
             frame.showGameOver(game.getCurrentScore(), best, victory);
         }
     }

@@ -130,6 +130,14 @@ public class GameFrame extends JFrame {
         gamePanel.requestFocusInWindow();
     }
 
+    // Stats are only kept for a signed-in player; ProfileManager ignores guests
+    public void recordFinishedGame(Game game) {
+        if (game == null || profileManager == null) {
+            return;
+        }
+        profileManager.recordGameSession(game.getCurrentScore(), game.getElapsedTimeMs() / 1000, game.getTotalLinesCleared());
+    }
+
     public void restartGame() {
         Game current = gamePanel.getGame();
         startNewGame(current != null ? current.getGameMode() : GameMode.CLASSIC);
