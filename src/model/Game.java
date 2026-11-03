@@ -20,6 +20,7 @@ public class Game {
     private java.util.List<Integer> lastClearedRows = new ArrayList<>();
     private java.util.List<Integer> lastClearedCols = new ArrayList<>();
     private int lastLinePoints;
+    private int totalLinesCleared;
 
     public Game(GameMode mode, ScoreManager scoreManager) {
         this.gameMode = mode != null ? mode : GameMode.CLASSIC;
@@ -67,6 +68,7 @@ public class Game {
         lastClearedRows.clear();
         lastClearedCols.clear();
         lastLinePoints = 0;
+        totalLinesCleared = 0;
         Logger.getLogger().log("Game restarted");
         start();
     }
@@ -98,6 +100,7 @@ public class Game {
         int lines = lastClearedRows.size() + lastClearedCols.size();
         if (lines > 0) {
             board.clearLines(lastClearedRows, lastClearedCols);
+            totalLinesCleared += lines;
             if (scoreManager != null) {
                 lastLinePoints = scoreManager.addLineClearScore(lines);
             }
@@ -204,5 +207,9 @@ public class Game {
 
     public int getLastLinePoints() {
         return lastLinePoints;
+    }
+
+    public int getTotalLinesCleared() {
+        return totalLinesCleared;
     }
 }
