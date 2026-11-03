@@ -122,6 +122,8 @@ public class GameFrame extends JFrame {
             }
         } else if ("LEADERBOARD".equalsIgnoreCase(screenName)) {
             leaderboardPanel.loadLeaderboardData();
+        } else if ("MENU".equalsIgnoreCase(screenName)) {
+            mainMenuPanel.refreshResumeButton();
         }
         cardLayout.show(cardPanel, screenName);
     }
