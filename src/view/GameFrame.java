@@ -46,6 +46,12 @@ public class GameFrame extends JFrame {
     private void initUI() {
         setTitle("BLOCKED.exe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                saveCurrentSession();
+            }
+        });
         setSize(800, 720);
         setMinimumSize(new Dimension(650, 650));
         setLocationRelativeTo(null);
@@ -122,12 +128,25 @@ public class GameFrame extends JFrame {
 
     public void startNewGame(GameMode mode) {
         Logger.getLogger().log("New game starting with mode: " + mode);
+        persistenceManager.clearSavedSession();
         scoreManager.resetCurrentScore();
         Game game = new Game(mode, scoreManager);
         game.start();
+        launchGame(game);
+    }
+
+    private void launchGame(Game game) {
         gamePanel.setGame(game);
         showScreen("GAME");
         gamePanel.requestFocusInWindow();
+    }
+
+    // Only unfinished games are written; the persistence layer skips finished ones
+    private void saveCurrentSession() {
+        Game current = gamePanel.getGame();
+        if (current != null && !current.isOver()) {
+            persistenceManager.saveGameSession(current, scoreManager);
+        }
     }
 
     // Stats are only kept for a signed-in player; ProfileManager ignores guests
@@ -145,15 +164,28 @@ public class GameFrame extends JFrame {
 
     public void returnToMenu() {
         gamePanel.stopRendering();
+        saveCurrentSession();
         showScreen("MENU");
     }
 
     public void resumeSavedGame() {
         Logger.getLogger().log("Resuming saved game session");
-        showScreen("LEADERBOARD");
+        GameMode mode = persistenceManager.getSavedGameMode();
+        if (mode == null) {
+            showScreen("MENU");
+            return;
+        }
+        Game game = new Game(mode, scoreManager);
+        if (!persistenceManager.resumeGameSession(game, scoreManager)) {
+            showScreen("MENU");
+            return;
+        }
+        game.start();
+        launchGame(game);
     }
 
     public void showGameOver(int finalScore, int bestScore, boolean victory) {
+        persistenceManager.clearSavedSession();
         Logger.getLogger().log("Game over presented: score=" + finalScore + ", best=" + bestScore + ", victory=" + victory);
         gameOverOverlay.updateDisplay(finalScore, bestScore, victory);
         showScreen("GAMEOVER");
