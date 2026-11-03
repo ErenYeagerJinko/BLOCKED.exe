@@ -133,30 +133,22 @@ public class ProfilePanel extends JPanel {
         bioScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
         bioScroll.setBorder(BorderFactory.createLineBorder(new Color(65, 65, 95), 1));
 
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+        JPanel buttonsPanel = new JPanel(new GridLayout(2, 2, 12, 10));
         buttonsPanel.setOpaque(false);
+        buttonsPanel.setPreferredSize(new Dimension(430, 92));
+        buttonsPanel.setMaximumSize(new Dimension(430, 92));
+        buttonsPanel.setMinimumSize(new Dimension(430, 92));
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel topRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
-        topRow.setOpaque(false);
-        topRow.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 208, 40);
-        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 208, 40);
-        topRow.add(playButton);
-        topRow.add(leaderboardButton);
+        playButton = UIButtonRenderer.createButton("Play", UIButtonRenderer.GREEN_BUTTON, 209, 41);
+        leaderboardButton = UIButtonRenderer.createButton("Leaderboard", UIButtonRenderer.NEUTRAL_BUTTON, 209, 41);
+        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 209, 41);
+        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 209, 41);
 
-        JPanel bottomRow = new JPanel(new FlowLayout(FlowLayout.CENTER, 14, 0));
-        bottomRow.setOpaque(false);
-        bottomRow.setAlignmentX(Component.CENTER_ALIGNMENT);
-        editProfileButton = UIButtonRenderer.createButton("Edit Bio", UIButtonRenderer.BLUE_BUTTON, 208, 40);
-        backButton = UIButtonRenderer.createButton("Back", UIButtonRenderer.BACK_BUTTON, 208, 40);
-        bottomRow.add(editProfileButton);
-        bottomRow.add(backButton);
-
-        buttonsPanel.add(topRow);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(0, 8)));
-        buttonsPanel.add(bottomRow);
+        buttonsPanel.add(playButton);
+        buttonsPanel.add(leaderboardButton);
+        buttonsPanel.add(editProfileButton);
+        buttonsPanel.add(backButton);
 
         card.add(titleLabel);
         card.add(Box.createRigidArea(new Dimension(0, 8)));

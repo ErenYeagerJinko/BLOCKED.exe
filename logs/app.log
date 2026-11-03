@@ -508,3 +508,85 @@
 2026-11-03 20:14:35 [INFO] UI button texture loaded and cached: resources/UI/slot/background.png
 2026-11-03 20:14:35 [INFO] UI button texture loaded and cached: resources/UI/pause/button.png
 2026-11-03 20:14:39 [INFO] Game session saved (CLASSIC, score=11)
+2026-11-03 20:14:42 [INFO] Application launching: BLOCKED.exe
+2026-11-03 20:14:42 [INFO] Leaderboard initialized with max entries: 50
+2026-11-03 20:14:42 [INFO] LeaderboardManager initialized
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Ahad
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Anas
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Babar
+2026-11-03 20:14:42 [INFO] Loaded 3 user profiles from storage
+2026-11-03 20:14:42 [INFO] Leaderboard entries set: total 3 entries
+2026-11-03 20:14:42 [INFO] Leaderboard sorted by highest score (3 entries)
+2026-11-03 20:14:42 [INFO] Leaderboard refreshed successfully with 3 entries
+2026-11-03 20:14:42 [INFO] ProfileController initialized
+2026-11-03 20:14:42 [INFO] Loaded high score: 2450
+2026-11-03 20:14:42 [INFO] Custom font loaded successfully: Kenney Future Narrow
+2026-11-03 20:14:42 [INFO] LoginPanel initialized
+2026-11-03 20:14:42 [INFO] RegisterPanel initialized
+2026-11-03 20:14:42 [INFO] ProfilePanel initialized
+2026-11-03 20:14:42 [INFO] Retrieving top 50 highest scores from leaderboard
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Ahad
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Anas
+2026-11-03 20:14:42 [INFO] UserProfile created for user: Babar
+2026-11-03 20:14:42 [INFO] Loaded 3 user profiles from storage
+2026-11-03 20:14:42 [INFO] Leaderboard entries set: total 3 entries
+2026-11-03 20:14:42 [INFO] Leaderboard sorted by highest score (3 entries)
+2026-11-03 20:14:42 [INFO] Leaderboard refreshed successfully with 3 entries
+2026-11-03 20:14:42 [INFO] Leaderboard sorted by highest score (3 entries)
+2026-11-03 20:14:42 [INFO] Populated LeaderboardPanel table with 3 entries (filter=Highest)
+2026-11-03 20:14:42 [INFO] LeaderboardPanel initialized
+2026-11-03 20:14:42 [INFO] MainMenuPanel initialized
+2026-11-03 20:14:42 [INFO] InstructionsPanel initialized
+2026-11-03 20:14:42 [INFO] MouseInputHandler initialized
+2026-11-03 20:14:42 [INFO] Loaded audio effect: SELECTION from resources/Sound/select.wav
+2026-11-03 20:14:42 [INFO] Loaded audio effect: PLACEMENT from resources/Sound/place.wav
+2026-11-03 20:14:42 [INFO] Loaded audio effect: LINE_CLEAR from resources/Sound/clear.wav
+2026-11-03 20:14:42 [INFO] Loaded audio effect: INVALID_MOVE from resources/Sound/invalid.wav
+2026-11-03 20:14:42 [INFO] Loaded audio effect: GAME_OVER from resources/Sound/invalid.wav
+2026-11-03 20:14:42 [INFO] KeyboardInputHandler initialized
+2026-11-03 20:14:42 [INFO] GameOverOverlay initialized
+2026-11-03 20:14:42 [INFO] GameFrame switching view to screen: LOGIN
+2026-11-03 20:14:42 [INFO] GameFrame initialized and ready
+2026-11-03 20:14:42 [INFO] Main GameFrame displayed
+2026-11-03 20:14:42 [INFO] Menu background image loaded: resources/Images/mainMenu.png
+2026-11-03 20:14:42 [INFO] Game background image loaded: resources/Images/gameScreen.png
+2026-11-03 20:14:42 [INFO] UI button texture loaded and cached: resources/UI/menu/button.png
+2026-11-03 20:14:42 [INFO] UI button texture loaded and cached: resources/UI/instructions/button.png
+2026-11-03 20:14:49 [INFO] Login submitted for user: ahad
+2026-11-03 20:14:49 [INFO] Attempting login for user: ahad
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Ahad
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Anas
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Babar
+2026-11-03 20:14:49 [INFO] Loaded 3 user profiles from storage
+2026-11-03 20:14:49 [INFO] Loaded profile for user: ahad (found=true)
+2026-11-03 20:14:49 [INFO] Password hash computed successfully using SHA-256
+2026-11-03 20:14:49 [INFO] Password verification completed: match=true
+2026-11-03 20:14:49 [INFO] Updated last login time for Ahad
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Ahad
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Anas
+2026-11-03 20:14:49 [INFO] UserProfile created for user: Babar
+2026-11-03 20:14:49 [INFO] Loaded 3 user profiles from storage
+2026-11-03 20:14:49 [INFO] Saved 3 user profiles to storage
+2026-11-03 20:14:49 [INFO] Saved profile for user: Ahad
+2026-11-03 20:14:49 [INFO] User logged in successfully: ahad
+2026-11-03 20:14:49 [INFO] Login succeeded in LoginPanel for: ahad
+2026-11-03 20:14:49 [INFO] GameFrame switching view to screen: PROFILE
+2026-11-03 20:14:49 [INFO] ProfilePanel avatar defaulted to placeholder emoji
+2026-11-03 20:14:49 [INFO] ProfilePanel refreshed for user: Ahad
+2026-11-03 20:14:49 [INFO] UI button texture loaded and cached: resources/UI/back/button.png
+2026-11-03 20:14:49 [INFO] UI button texture loaded and cached: resources/UI/classic/button.png
+2026-11-03 20:15:40 [INFO] UserProfile created for user: Ahad
+2026-11-03 20:15:40 [INFO] UserProfile created for user: Anas
+2026-11-03 20:15:40 [INFO] UserProfile created for user: Babar
+2026-11-03 20:15:40 [INFO] Loaded 3 user profiles from storage
+2026-11-03 20:15:40 [INFO] Saved 3 user profiles to storage
+2026-11-03 20:15:40 [INFO] Saved profile for user: Ahad
+2026-11-03 20:15:40 [INFO] Updated profile picture for user: Ahad -> D:\WorkSheets\XFAST\W.P.jpeg
+2026-11-03 20:15:40 [INFO] ProfilePanel loaded avatar: D:\WorkSheets\XFAST\W.P.jpeg
+2026-11-03 20:15:40 [INFO] Profile picture updated to: D:\WorkSheets\XFAST\W.P.jpeg
+2026-11-03 20:15:47 [INFO] GameFrame switching view to screen: MENU
+2026-11-03 20:15:47 [INFO] UI button texture loaded and cached: resources/UI/exit/button.png
+2026-11-03 20:15:47 [INFO] UI button texture loaded and cached: resources/UI/time-attack/button.png
+2026-11-03 20:15:54 [INFO] GameFrame switching view to screen: PROFILE
+2026-11-03 20:15:54 [INFO] ProfilePanel loaded avatar: D:\WorkSheets\XFAST\W.P.jpeg
+2026-11-03 20:15:54 [INFO] ProfilePanel refreshed for user: Ahad
