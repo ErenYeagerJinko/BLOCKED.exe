@@ -29,6 +29,7 @@ public class UIButtonRenderer {
         if (fontFile.exists()) {
             try {
                 customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
                 Logger.getLogger().log("Custom font loaded successfully: Kenney Future Narrow");
             } catch (Exception e) {
                 Logger.getLogger().error("Failed to load custom font: " + e.getMessage());

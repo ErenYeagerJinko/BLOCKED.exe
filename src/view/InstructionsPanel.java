@@ -47,11 +47,10 @@ public class InstructionsPanel extends JPanel {
         card.setBackground(new Color(20, 22, 34, 235));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(90, 100, 140), 2, true),
-                BorderFactory.createEmptyBorder(16, 24, 16, 24)
+                BorderFactory.createEmptyBorder(18, 24, 18, 24)
         ));
-        card.setPreferredSize(new Dimension(630, 620));
-        card.setMaximumSize(new Dimension(630, 620));
-        card.setMinimumSize(new Dimension(600, 580));
+        card.setPreferredSize(new Dimension(620, 600));
+        card.setMaximumSize(new Dimension(620, 600));
 
         // Header Title
         JLabel titleLabel = new JLabel("HOW TO PLAY");
@@ -69,58 +68,23 @@ public class InstructionsPanel extends JPanel {
         card.add(titleLabel);
         card.add(Box.createVerticalStrut(4));
         card.add(subtitleLabel);
+        card.add(Box.createVerticalStrut(14));
+
+        // Objective Section
+        JPanel rulesSection = createSectionPanel("GAME RULES & OBJECTIVES");
+        addBulletPoint(rulesSection, "Drag and drop polyomino pieces from the 3-piece tray onto the 8x8 grid.");
+        addBulletPoint(rulesSection, "Fill complete horizontal rows or vertical columns to clear them for points.");
+        addBulletPoint(rulesSection, "Simultaneous row and column clears trigger high-scoring combo multipliers.");
+        addBulletPoint(rulesSection, "The tray automatically refills with 3 fresh pieces once all 3 are placed.");
+        addBulletPoint(rulesSection, "Classic Mode: Play until no remaining tray pieces fit on the board.");
+        addBulletPoint(rulesSection, "Time Attack: 180-second countdown with a target of 500 points to win.");
+        card.add(rulesSection);
+
         card.add(Box.createVerticalStrut(12));
 
-        // Objective & Rules Section Box
-        JPanel rulesBox = new JPanel();
-        rulesBox.setLayout(new BoxLayout(rulesBox, BoxLayout.Y_AXIS));
-        rulesBox.setBackground(new Color(28, 30, 46, 200));
-        rulesBox.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(70, 75, 105), 1, true),
-                BorderFactory.createEmptyBorder(10, 14, 10, 14)
-        ));
-        rulesBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        rulesBox.setMaximumSize(new Dimension(580, 185));
-        rulesBox.setPreferredSize(new Dimension(580, 185));
-
-        JLabel rulesHeader = new JLabel("GAME RULES & OBJECTIVES");
-        rulesHeader.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
-        rulesHeader.setForeground(new Color(3, 169, 244));
-        rulesHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
-        rulesBox.add(rulesHeader);
-        rulesBox.add(Box.createVerticalStrut(6));
-
-        addBulletPoint(rulesBox, "Drag and drop polyomino pieces from tray onto the 8x8 grid.");
-        addBulletPoint(rulesBox, "Fill complete horizontal rows or vertical columns to clear them.");
-        addBulletPoint(rulesBox, "Simultaneous row and column clears trigger combo multipliers.");
-        addBulletPoint(rulesBox, "Tray refills automatically with 3 fresh pieces once all are placed.");
-        addBulletPoint(rulesBox, "Classic Mode: Play until no remaining tray pieces fit on the board.");
-        addBulletPoint(rulesBox, "Time Attack: 180s countdown with a target of 500 points to win.");
-
-        card.add(rulesBox);
-        card.add(Box.createVerticalStrut(12));
-
-        // Controls Reference Section Box
-        JPanel controlsBox = new JPanel();
-        controlsBox.setLayout(new BoxLayout(controlsBox, BoxLayout.Y_AXIS));
-        controlsBox.setBackground(new Color(28, 30, 46, 200));
-        controlsBox.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(70, 75, 105), 1, true),
-                BorderFactory.createEmptyBorder(10, 14, 10, 14)
-        ));
-        controlsBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        controlsBox.setMaximumSize(new Dimension(580, 220));
-        controlsBox.setPreferredSize(new Dimension(580, 220));
-
-        JLabel controlsHeader = new JLabel("CONTROLS REFERENCE");
-        controlsHeader.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
-        controlsHeader.setForeground(new Color(3, 169, 244));
-        controlsHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
-        controlsBox.add(controlsHeader);
-        controlsBox.add(Box.createVerticalStrut(8));
-
-        // Strict 3-column table: rows=0 ensures exact 3-column distribution
-        JPanel tablePanel = new JPanel(new GridLayout(0, 3, 14, 6));
+        // Controls Section
+        JPanel controlsSection = createSectionPanel("CONTROLS REFERENCE");
+        JPanel tablePanel = new JPanel(new GridLayout(0, 3, 14, 5));
         tablePanel.setOpaque(false);
         tablePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -138,7 +102,7 @@ public class InstructionsPanel extends JPanel {
         controlsBox.add(tablePanel);
         card.add(controlsBox);
 
-        card.add(Box.createVerticalStrut(16));
+        card.add(Box.createVerticalStrut(18));
 
         // Back Button
         backButton = UIButtonRenderer.createButton("BACK TO MENU", UIButtonRenderer.BACK_BUTTON, 230, 40);
@@ -155,9 +119,11 @@ public class InstructionsPanel extends JPanel {
      * @param text explanation text
      */
     private void addBulletPoint(JPanel panel, String text) {
-        JLabel label = new JLabel("- " + text);
+        JLabel label = new JLabel("<html><table width='556' cellpadding='0' cellspacing='0'><tr>"
+                + "<td valign='top' width='14' style='color:#e1e6f0; font-family:\"Kenney Future Narrow\"; font-size:11pt;'>-</td>"
+                + "<td style='color:#e1e6f0; font-family:\"Kenney Future Narrow\"; font-size:11pt;'>" + text + "</td>"
+                + "</tr></table></html>");
         label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 11f));
-        label.setForeground(new Color(225, 230, 240));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(label);
         panel.add(Box.createVerticalStrut(3));
