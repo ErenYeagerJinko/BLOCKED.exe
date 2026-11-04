@@ -1,9 +1,9 @@
 mode=CLASSIC
 score=0
-elapsed=1654
+elapsed=1080
 remaining=0
 lines=0
-tray=SQUARE_2X2,L_TOP_RIGHT,SQUARE_2X2
+tray=T_LEFT,L_TOP_RIGHT,L_TOP_LEFT
 row=.,.,.,.,.,.,.,.
 row=.,.,.,.,.,.,.,.
 row=.,.,.,.,.,.,.,.
