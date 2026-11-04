@@ -47,10 +47,10 @@ public class InstructionsPanel extends JPanel {
         card.setBackground(new Color(20, 22, 34, 235));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(90, 100, 140), 2, true),
-                BorderFactory.createEmptyBorder(20, 28, 20, 28)
+                BorderFactory.createEmptyBorder(18, 24, 18, 24)
         ));
-        card.setPreferredSize(new Dimension(580, 580));
-        card.setMaximumSize(new Dimension(580, 580));
+        card.setPreferredSize(new Dimension(620, 600));
+        card.setMaximumSize(new Dimension(620, 600));
 
         // Title
         JLabel titleLabel = new JLabel("HOW TO PLAY");
@@ -64,11 +64,11 @@ public class InstructionsPanel extends JPanel {
         subtitleLabel.setForeground(new Color(190, 200, 220));
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        card.add(Box.createVerticalStrut(4));
+        card.add(Box.createVerticalStrut(2));
         card.add(titleLabel);
         card.add(Box.createVerticalStrut(4));
         card.add(subtitleLabel);
-        card.add(Box.createVerticalStrut(16));
+        card.add(Box.createVerticalStrut(14));
 
         // Objective Section
         JPanel rulesSection = createSectionPanel("GAME RULES & OBJECTIVES");
@@ -80,11 +80,11 @@ public class InstructionsPanel extends JPanel {
         addBulletPoint(rulesSection, "Time Attack: 180-second countdown with a target of 500 points to win.");
         card.add(rulesSection);
 
-        card.add(Box.createVerticalStrut(14));
+        card.add(Box.createVerticalStrut(12));
 
         // Controls Section
         JPanel controlsSection = createSectionPanel("CONTROLS REFERENCE");
-        JPanel tablePanel = new JPanel(new GridLayout(6, 3, 8, 4));
+        JPanel tablePanel = new JPanel(new GridLayout(0, 3, 14, 5));
         tablePanel.setOpaque(false);
         tablePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -102,7 +102,7 @@ public class InstructionsPanel extends JPanel {
         controlsSection.add(tablePanel);
         card.add(controlsSection);
 
-        card.add(Box.createVerticalStrut(20));
+        card.add(Box.createVerticalStrut(18));
 
         // Back Button
         backButton = UIButtonRenderer.createButton("BACK TO MENU", UIButtonRenderer.BACK_BUTTON, 240, 42);
@@ -141,9 +141,11 @@ public class InstructionsPanel extends JPanel {
      * @param text explanation text
      */
     private void addBulletPoint(JPanel panel, String text) {
-        JLabel label = new JLabel("- " + text);
+        JLabel label = new JLabel("<html><table width='556' cellpadding='0' cellspacing='0'><tr>"
+                + "<td valign='top' width='14' style='color:#e1e6f0; font-family:\"Kenney Future Narrow\"; font-size:11pt;'>-</td>"
+                + "<td style='color:#e1e6f0; font-family:\"Kenney Future Narrow\"; font-size:11pt;'>" + text + "</td>"
+                + "</tr></table></html>");
         label.setFont(UIButtonRenderer.getFont(Font.PLAIN, 11f));
-        label.setForeground(new Color(225, 230, 240));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(label);
         panel.add(Box.createVerticalStrut(3));
