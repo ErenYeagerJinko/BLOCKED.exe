@@ -89,8 +89,8 @@ public class InstructionsPanel extends JPanel {
         tablePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         addTableHeader(tablePanel, "Action");
-        addTableHeader(tablePanel, "Mouse Control");
-        addTableHeader(tablePanel, "Keyboard Shortcut");
+        addTableHeader(tablePanel, "Mouse");
+        addTableHeader(tablePanel, "Keyboard");
 
         addTableRow(tablePanel, "Select Piece", "Drag from Tray", "Keys 1, 2, or 3");
         addTableRow(tablePanel, "Move Preview", "Drag across Board", "Arrow Keys");
@@ -99,17 +99,39 @@ public class InstructionsPanel extends JPanel {
         addTableRow(tablePanel, "Restart Game", "Click Restart", "Key R");
         addTableRow(tablePanel, "Mute / Unmute", "Click Sound", "Key M");
 
-        controlsBox.add(tablePanel);
-        card.add(controlsBox);
+        controlsSection.add(tablePanel);
+        card.add(controlsSection);
 
         card.add(Box.createVerticalStrut(18));
 
         // Back Button
-        backButton = UIButtonRenderer.createButton("BACK TO MENU", UIButtonRenderer.BACK_BUTTON, 230, 40);
+        backButton = UIButtonRenderer.createButton("BACK TO MENU", UIButtonRenderer.BACK_BUTTON, 240, 42);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.add(backButton);
 
         add(card);
+    }
+
+    /**
+     * Helper to create a styled section container with a title.
+     *
+     * @param title section heading
+     * @return configured JPanel
+     */
+    private JPanel createSectionPanel(String title) {
+        JPanel section = new JPanel();
+        section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+        section.setOpaque(false);
+        section.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel sectionTitle = new JLabel(title);
+        sectionTitle.setFont(UIButtonRenderer.getFont(Font.BOLD, 13f));
+        sectionTitle.setForeground(new Color(3, 169, 244));
+        sectionTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        section.add(sectionTitle);
+        section.add(Box.createVerticalStrut(6));
+        return section;
     }
 
     /**
@@ -134,7 +156,7 @@ public class InstructionsPanel extends JPanel {
      */
     private void addTableHeader(JPanel table, String title) {
         JLabel label = new JLabel(title);
-        label.setFont(UIButtonRenderer.getFont(Font.BOLD, 12f));
+        label.setFont(UIButtonRenderer.getFont(Font.BOLD, 11f));
         label.setForeground(new Color(255, 214, 0));
         table.add(label);
     }
@@ -144,16 +166,16 @@ public class InstructionsPanel extends JPanel {
      */
     private void addTableRow(JPanel table, String action, String mouse, String keyboard) {
         JLabel actionLabel = new JLabel(action);
-        actionLabel.setFont(UIButtonRenderer.getFont(Font.BOLD, 11f));
-        actionLabel.setForeground(new Color(210, 220, 235));
+        actionLabel.setFont(UIButtonRenderer.getFont(Font.PLAIN, 11f));
+        actionLabel.setForeground(new Color(200, 210, 230));
 
         JLabel mouseLabel = new JLabel(mouse);
         mouseLabel.setFont(UIButtonRenderer.getFont(Font.PLAIN, 11f));
-        mouseLabel.setForeground(new Color(170, 185, 210));
+        mouseLabel.setForeground(new Color(160, 175, 200));
 
         JLabel keyLabel = new JLabel(keyboard);
         keyLabel.setFont(UIButtonRenderer.getFont(Font.PLAIN, 11f));
-        keyLabel.setForeground(new Color(170, 185, 210));
+        keyLabel.setForeground(new Color(160, 175, 200));
 
         table.add(actionLabel);
         table.add(mouseLabel);
